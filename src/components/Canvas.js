@@ -1,0 +1,78 @@
+import {
+  CanvasContainer,
+  EmailPreview,
+  EmailContent,
+  UberLogo,
+  ImageContainer,
+  ImagePlaceholder,
+  ContentSection,
+  Greeting,
+  VariableName,
+  BodyText,
+  DownloadButton,
+  AddButton,
+} from "./styles";
+import { Elements } from "./Elements/Elements";
+
+export default function Canvas({ onDrop, elements, onClick }) {
+  return (
+    <CanvasContainer>
+      <EmailPreview>
+        <EmailContent>
+          <Elements
+            path={""}
+            onDrop={(path, item) => {
+              console.log(path, item);
+              onDrop(path, item);
+            }}
+            onClick={onClick}
+            elements={elements}
+            accept={["header", "footer", "main"]}
+          />
+          {/*<UberLogo>Uber</UberLogo>*/}
+
+          {/*<ImageContainer>*/}
+          {/*  <ImagePlaceholder>*/}
+          {/*    <img*/}
+          {/*      src="/person-with-backpack-illustration.jpg"*/}
+          {/*      alt="Newsletter illustration"*/}
+          {/*      style={{ width: "100%", height: "100%", objectFit: "contain" }}*/}
+          {/*    />*/}
+          {/*  </ImagePlaceholder>*/}
+          {/*</ImageContainer>*/}
+
+          {/*<ContentSection>*/}
+          {/*  <Greeting>*/}
+          {/*    Hey <VariableName>first_name</VariableName>*/}
+          {/*  </Greeting>*/}
+
+          {/*  <BodyText>*/}
+          {/*    Your well-being is our top priority. To ensure a safe and secure*/}
+          {/*    journey, we've implemented additional safety reminders within the*/}
+          {/*    app.*/}
+          {/*  </BodyText>*/}
+
+          {/*  <DownloadButton>Download PDF</DownloadButton>*/}
+
+          {/*  <BodyText>*/}
+          {/*    These reminders are designed to keep you informed and empowered*/}
+          {/*    throughout every step of your experience. Whether you're a driver*/}
+          {/*    or a passenger, our commitment to your safety remains unwavering.*/}
+          {/*  </BodyText>*/}
+          {/*</ContentSection>*/}
+        </EmailContent>
+      </EmailPreview>
+
+      {/*<AddButton>*/}
+      {/*  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">*/}
+      {/*    <path*/}
+      {/*      d="M10 4v12M4 10h12"*/}
+      {/*      stroke="currentColor"*/}
+      {/*      strokeWidth="2"*/}
+      {/*      strokeLinecap="round"*/}
+      {/*    />*/}
+      {/*  </svg>*/}
+      {/*</AddButton>*/}
+    </CanvasContainer>
+  );
+}

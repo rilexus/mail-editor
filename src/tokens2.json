@@ -1,0 +1,37 @@
+{
+  "name": "black",
+  "colors": {
+    "primary": "blue",
+    "red1": "rgb(255,0,0)",
+    "red2": "rgb(255,64,64)",
+    "red3": "rgb(255,137,137)",
+    "grey1": "rgb(220, 220, 220)",
+    "grey2": "rgb(220, 220, 220)",
+    "grey3": "rgb(220, 220, 220)",
+    "backgrounds" : {
+      "primary": "black"
+    }
+  },
+  "radius": {
+    "rounded": "4px"
+  },
+  "typography": {
+    "color": {
+      "primary": "white"
+    }
+  },
+  "spacing": {
+    "margin": {
+      "mt1": "1rem",
+      "mr1": "1rem",
+      "mb1": "1rem",
+      "ml1": "1rem"
+    },
+    "padding": {
+      "pt1": "1rem",
+      "pr1": "1rem",
+      "pb1": "1rem",
+      "pl1": "1rem"
+    }
+  }
+}

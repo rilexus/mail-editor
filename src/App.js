@@ -1,0 +1,90 @@
+import { useState } from "react";
+import Header from "./components/Header";
+import Sidebar from "./components/Sidebar";
+import Canvas from "./components/Canvas";
+import PropertiesPanel from "./components/PropertiesPanel";
+import { AppContainer, MainContent, HelpButton } from "./components/styles";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndProvider } from "react-dnd";
+import { set } from "./utils/set";
+
+const initialElements = {
+  // header: {},
+  // main: {
+  //   elements: {
+  //     toc: {},
+  //     content: {
+  //       elements: {
+  //         inner: {
+  //           elements: {
+  //             headline: {
+  //               template: "recordField",
+  //               value: "subject_area_name",
+  //             },
+  //           },
+  //           articles: {},
+  //         },
+  //       },
+  //     },
+  //   },
+  // },
+  // footer: {},
+};
+
+export default function EmailEditor() {
+  const [elements, setElements] = useState(() => ({
+    elements: initialElements,
+  }));
+  const [selectedElement, setSelectedElement] = useState("picture");
+  const [paddingsEnabled, setPaddingsEnabled] = useState(true);
+  const [paddings, setPaddings] = useState({ L: 24, T: 24, R: 24, B: 24 });
+  const [cornerRadius, setCornerRadius] = useState(4);
+  const [opacity, setOpacity] = useState(100);
+  const [blendMode, setBlendMode] = useState("Normal");
+
+  return (
+    <AppContainer>
+      <Header />
+      <MainContent>
+        <DndProvider backend={HTML5Backend}>
+          <Sidebar onSelectElement={setSelectedElement} />
+          <Canvas
+            elements={elements.elements}
+            onClick={(id) => {
+              console.log(id);
+            }}
+            onDrop={(path, item) => {
+              setElements((e) => set(e, path, item));
+            }}
+          />
+          <PropertiesPanel
+            selectedElement={selectedElement}
+            paddingsEnabled={paddingsEnabled}
+            setPaddingsEnabled={setPaddingsEnabled}
+            paddings={paddings}
+            setPaddings={setPaddings}
+            cornerRadius={cornerRadius}
+            setCornerRadius={setCornerRadius}
+            opacity={opacity}
+            setOpacity={setOpacity}
+            blendMode={blendMode}
+            setBlendMode={setBlendMode}
+          />
+        </DndProvider>
+      </MainContent>
+      {/*<HelpButton>*/}
+      {/*  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">*/}
+      {/*    <path*/}
+      {/*      d="M8 0C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm0 14c-3.3 0-6-2.7-6-6s2.7-6 6-6 6 2.7 6 6-2.7 6-6 6z"*/}
+      {/*      fill="currentColor"*/}
+      {/*    />*/}
+      {/*    <path*/}
+      {/*      d="M8 11c-.6 0-1 .4-1 1s.4 1 1 1 1-.4 1-1-.4-1-1-1zM8 3C6.9 3 6 3.9 6 5h1.5c0-.3.2-.5.5-.5s.5.2.5.5c0 1-1.5.9-1.5 2.5V8h1.5v-.5c0-.6 1.5-.9 1.5-2.5 0-1.1-.9-2-2-2z"*/}
+      {/*      fill="currentColor"*/}
+      {/*    />*/}
+      {/*  </svg>*/}
+      {/*  Need Help?*/}
+      {/*</HelpButton>*/}
+    </AppContainer>
+  );
+}
