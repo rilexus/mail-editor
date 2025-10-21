@@ -1085,7 +1085,9 @@
               }
             },
             "main": {
+
               "template": "container",
+
               "elements": {
                 "toc": {
                   "template": "container",

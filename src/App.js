@@ -7,93 +7,15 @@ import { AppContainer, MainContent, HelpButton } from "./components/styles";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 import { set } from "./utils/set";
+import {
+  StateProvider,
+  useApplicationState,
+  withApplicationState,
+} from "./providers/StateProvider";
 
-const initialLayout = {
-  name: "root",
-  type: "layout",
-  attributes: {},
-  props: {},
-  children: [
-    // {
-    //   name: 'header',
-    //   type: "Component",
-    //   children: [],
-    //   props: {},
-    //   attributes: {}
-    // },
-    // {
-    //   name: "main",
-    //   type: "Component",
-    //   attributes: {},
-    //   props: {},
-    //   children: [
-    //     {
-    //       type: "Component",
-    //       name: "toc",
-    //       attributes: {},
-    //       props: {},
-    //       children: [],
-    //     },
-    //     {
-    //       type: "Component",
-    //       name: "content",
-    //       attributes: {},
-    //       props: {},
-    //       children: [
-    //         {
-    //           type: "Component",
-    //           name: "inner",
-    //           attributes: {},
-    //           props: {},
-    //           children: [
-    //             {
-    //               name: "headline",
-    //               type: "Component",
-    //               props: {
-    //                 template: "recordField",
-    //                 value: "subject_area_name",
-    //               },
-    //               attributes: {},
-    //               children: [],
-    //             },
-    //           ],
-    //         },
-    //       ],
-    //     },
-    //   ],
-    // },
-    // {
-    //   name: "footer",
-    //   type: "Component",
-    //   props: {},
-    //   children: [],
-    //   attributes: {},
-    // },
-  ],
-  // header: {},
-  // main: {
-  //   elements: {
-  //     toc: {},
-  //     content: {
-  //       elements: {
-  //         inner: {
-  //           elements: {
-  //             headline: {
-  //               template: "recordField",
-  //               value: "subject_area_name",
-  //             },
-  //           },
-  //           articles: {},
-  //         },
-  //       },
-  //     },
-  //   },
-  // },
-  // footer: {},
-};
+export default withApplicationState(function EmailEditor() {
+  const [applicationState] = useApplicationState();
 
-export default function EmailEditor() {
-  const [layout, setLayout] = useState(() => initialLayout);
   const [selectedElement, setSelectedElement] = useState("picture");
   const [paddingsEnabled, setPaddingsEnabled] = useState(true);
   const [paddings, setPaddings] = useState({ L: 24, T: 24, R: 24, B: 24 });
@@ -107,25 +29,22 @@ export default function EmailEditor() {
       <MainContent>
         <DndProvider backend={HTML5Backend}>
           <Sidebar onSelectElement={setSelectedElement} />
-          <Canvas
-            layout={layout}
-            setLayout={setLayout}
-            onClick={(id) => {}}
-            onDrop={(path, item) => {}}
-          />
-          <PropertiesPanel
-            selectedElement={selectedElement}
-            paddingsEnabled={paddingsEnabled}
-            setPaddingsEnabled={setPaddingsEnabled}
-            paddings={paddings}
-            setPaddings={setPaddings}
-            cornerRadius={cornerRadius}
-            setCornerRadius={setCornerRadius}
-            opacity={opacity}
-            setOpacity={setOpacity}
-            blendMode={blendMode}
-            setBlendMode={setBlendMode}
-          />
+          <Canvas onClick={(id) => {}} onDrop={(path, item) => {}} />
+          {applicationState.selectedComponent && (
+            <PropertiesPanel
+              selectedElement={selectedElement}
+              paddingsEnabled={paddingsEnabled}
+              setPaddingsEnabled={setPaddingsEnabled}
+              paddings={paddings}
+              setPaddings={setPaddings}
+              cornerRadius={cornerRadius}
+              setCornerRadius={setCornerRadius}
+              opacity={opacity}
+              setOpacity={setOpacity}
+              blendMode={blendMode}
+              setBlendMode={setBlendMode}
+            />
+          )}
         </DndProvider>
       </MainContent>
       {/*<HelpButton>*/}
@@ -143,4 +62,4 @@ export default function EmailEditor() {
       {/*</HelpButton>*/}
     </AppContainer>
   );
-}
+});

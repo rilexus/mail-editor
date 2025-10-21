@@ -15,65 +15,7 @@ import {
   ElementType,
 } from "./styles";
 import { useDrag } from "react-dnd";
-
-const components = [
-  {
-    id: "header",
-    label: "Header",
-    icon: "",
-    type: "Component",
-    name: "header",
-    children: [],
-  },
-  {
-    id: "footer",
-    label: "Footer",
-    icon: "",
-    type: "Component",
-    name: "footer",
-    children: [],
-  },
-  {
-    id: "main",
-    label: "Main",
-    icon: "",
-    type: "Component",
-    name: "main",
-    children: [],
-  },
-  {
-    id: "toc",
-    label: "Toc",
-    icon: "",
-    type: "Component",
-    name: "toc",
-    children: [],
-  },
-  {
-    id: "content",
-    label: "Content",
-    icon: "",
-    type: "Component",
-    name: "content",
-    children: [],
-  },
-  {
-    id: "inner",
-    label: "Inner",
-    icon: "",
-    type: "Component",
-    name: "inner",
-    children: [],
-  },
-  {
-    id: "headline",
-    label: "Headline",
-    icon: "H",
-    type: "Component",
-    name: "headline",
-    children: [],
-  },
-];
+import { defaultComponents } from "../defaultComponents";
 
 const contentItems = [
   { id: "title", label: "Title", icon: "T" },
@@ -89,7 +31,7 @@ const contentItems = [
 const DraggableElementType = ({ item, onClick }) => {
   const [{ isDragging }, drag, dragPreview] = useDrag(() => ({
     // "type" is required. It is used by the "accept" specification of drop targets.
-    type: item.type,
+    type: item.name,
     item,
     // The collect function utilizes a "monitor" instance (see the Overview for what this is)
     // to pull important pieces of state from the DnD system.
@@ -211,7 +153,7 @@ export default function Sidebar({ onSelectElement }) {
       {activeTab === "elements" && (
         <div>
           <ContentList>
-            {components.map((item) => (
+            {defaultComponents.map((item) => (
               <DraggableElementType
                 key={item.id}
                 item={item}

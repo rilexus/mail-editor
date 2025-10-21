@@ -49,6 +49,7 @@ export const HeaderContainer = styled.header`
   padding: 16px 24px;
   background: white;
   border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 `;
 
 export const HeaderLeft = styled.div`
@@ -213,6 +214,7 @@ export const SidebarContainer = styled.aside`
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 `;
 
 export const TabsContainer = styled.div`
@@ -347,7 +349,6 @@ export const CanvasContainer = styled.main`
   align-items: center;
   padding: 40px;
   overflow-y: auto;
-  background: #e5e7eb;
 `;
 
 export const EmailPreview = styled.div`
@@ -460,6 +461,7 @@ export const PropertiesPanelContainer = styled.aside`
   overflow-y: auto;
   padding: 20px;
   gap: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 `;
 
 export const PropertySection = styled.div`

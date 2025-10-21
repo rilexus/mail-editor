@@ -23,6 +23,7 @@ import {
   DeleteIcon,
   VisibilityIcon,
 } from "./styles";
+import { useApplicationState } from "../providers/StateProvider";
 
 export default function PropertiesPanel({
   paddingsEnabled,
@@ -36,11 +37,16 @@ export default function PropertiesPanel({
   blendMode,
   setBlendMode,
 }) {
+  const [applicationState, { selectComponent }] = useApplicationState();
+  const { selectedComponent } = applicationState;
+  const label = selectedComponent?.label;
+  const attributes = selectComponent ? selectComponent.attributes : {};
+
   return (
     <PropertiesPanelContainer>
       <PropertySection>
         <PropertyHeader>
-          <PropertyTitle>Promo Banner</PropertyTitle>
+          <PropertyTitle>{label}</PropertyTitle>
           <PropertyCount>21</PropertyCount>
         </PropertyHeader>
       </PropertySection>
