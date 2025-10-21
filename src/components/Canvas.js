@@ -12,23 +12,99 @@ import {
   DownloadButton,
   AddButton,
 } from "./styles";
-import { Elements } from "./Elements/Elements";
+import { handleAddComponent } from "../utils/layout";
+import { CanvasComponent } from "./CanvasComponent";
+import { DropArea } from "./DropArea";
+import { Fragment } from "react";
+import { insertAt } from "../utils/insertAt";
+import { removeAt } from "../utils/removeAt";
 
-export default function Canvas({ onDrop, elements, onClick }) {
+export default function Canvas({ layout, onClick, setLayout }) {
+  const handleDrop = (dropArea, item) => {
+    console.log("dropArea", dropArea);
+    console.log("item", item);
+
+    const splitDropAreaPath = dropArea.path.split(".");
+    const pathToDropArea = splitDropAreaPath.slice(0, -1).join(".");
+
+    setLayout(handleAddComponent(dropArea.path, item));
+  };
+
   return (
     <CanvasContainer>
       <EmailPreview>
         <EmailContent>
-          <Elements
-            path={""}
-            onDrop={(path, item) => {
-              console.log(path, item);
-              onDrop(path, item);
+          {/*{layout.children.length > 0 && (*/}
+          {/*  <DropArea*/}
+          {/*    data={{*/}
+          {/*      path: `children`,*/}
+          {/*    }}*/}
+          {/*    onDrop={(dropArea, item) => {*/}
+          {/*      handleDrop(dropArea, [item, ...layout.children]);*/}
+          {/*    }}*/}
+          {/*    onHover={() => {}}*/}
+          {/*    accept={["Component"]}*/}
+          {/*  />*/}
+          {/*)}*/}
+
+          {/*{layout.children.length > 0 && (*/}
+          {/*  <DropArea*/}
+          {/*    data={{*/}
+          {/*      path: "children",*/}
+          {/*    }}*/}
+          {/*    onDrop={(dropArea, item) => {*/}
+          {/*      handleDrop(dropArea, [{ ...item }, ...layout.children]);*/}
+          {/*    }}*/}
+          {/*    accept={["Component"]}*/}
+          {/*  />*/}
+          {/*)}*/}
+          <DropArea
+            data={{
+              path: "children",
             }}
-            onClick={onClick}
-            elements={elements}
-            accept={["header", "footer", "main"]}
+            onDrop={(dropArea, item) => {
+              handleDrop(dropArea, [{ ...item }, ...layout.children]);
+            }}
+            accept={["Component"]}
           />
+          {layout.children.map((child, i) => {
+            const path = `children.${i}`;
+            return (
+              <Fragment key={i}>
+                <CanvasComponent
+                  onDelete={(path, data) => {
+                    const splitedPath = path.split(".");
+                    const index = Number(splitedPath[splitedPath.length - 1]);
+                    handleDrop(
+                      {
+                        path: "children",
+                      },
+                      removeAt(layout.children, index)
+                    );
+                  }}
+                  parent={layout}
+                  key={child.name}
+                  path={path}
+                  onDrop={handleDrop}
+                  data={child}
+                  {...child.props}
+                />
+                <DropArea
+                  data={{
+                    path: `children`,
+                  }}
+                  onDrop={(dropArea, item) => {
+                    handleDrop(
+                      dropArea,
+                      insertAt(layout.children, i + 1, item)
+                    );
+                  }}
+                  accept={["Component"]}
+                />
+              </Fragment>
+            );
+          })}
+
           {/*<UberLogo>Uber</UberLogo>*/}
 
           {/*<ImageContainer>*/}

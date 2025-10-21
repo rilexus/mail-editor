@@ -8,8 +8,8 @@ import { Inner } from "./Elements/Inner";
 import { Headline } from "./Elements/Headline";
 import { Articles } from "./Elements/Articles";
 
-export const getElement = (type) => {
-  switch (type) {
+export const getComponent = ({ name }) => {
+  switch (name) {
     case ElementTypes.header:
       return Header;
     case ElementTypes.footer:

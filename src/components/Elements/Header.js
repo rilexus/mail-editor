@@ -1,15 +1,12 @@
-import { Element } from "./Element";
-
-export const Header = ({ children, onClick, elements }) => {
+export const Header = ({ children }) => {
   return (
-    <div>
+    <div style={{
+        minHeight: '100px',
+        border: '1px solid black',
+    }}>
       header
       {children}
-      {elements &&
-        Object.entries(elements).map(([type, element]) => {
-          return <Element type={type} element={element} />;
-        })}
-      {children}
+      
     </div>
   );
 };

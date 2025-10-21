@@ -23,7 +23,7 @@ export const ArticleElement = ({ id, type, elements, ...rest }) => {
     >
       <ElementOverlay
         onClick={() => {
-          console.log(id);
+          // console.log(id);
         }}
       />
       <Elem {...rest}>

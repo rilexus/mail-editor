@@ -16,14 +16,63 @@ import {
 } from "./styles";
 import { useDrag } from "react-dnd";
 
-const elements = [
-  { id: "header", label: "Header", icon: "", type: "header" },
-  { id: "footer", label: "Footer", icon: "", type: "footer" },
-  { id: "main", label: "Main", icon: "", type: "main" },
-  { id: "toc", label: "Toc", icon: "", type: "toc" },
-  { id: "content", label: "Content", icon: "", type: "content" },
-  { id: "inner", label: "Inner", icon: "", type: "inner" },
-  { id: "headline", label: "Headline", icon: "H", type: "headline" },
+const components = [
+  {
+    id: "header",
+    label: "Header",
+    icon: "",
+    type: "Component",
+    name: "header",
+    children: [],
+  },
+  {
+    id: "footer",
+    label: "Footer",
+    icon: "",
+    type: "Component",
+    name: "footer",
+    children: [],
+  },
+  {
+    id: "main",
+    label: "Main",
+    icon: "",
+    type: "Component",
+    name: "main",
+    children: [],
+  },
+  {
+    id: "toc",
+    label: "Toc",
+    icon: "",
+    type: "Component",
+    name: "toc",
+    children: [],
+  },
+  {
+    id: "content",
+    label: "Content",
+    icon: "",
+    type: "Component",
+    name: "content",
+    children: [],
+  },
+  {
+    id: "inner",
+    label: "Inner",
+    icon: "",
+    type: "Component",
+    name: "inner",
+    children: [],
+  },
+  {
+    id: "headline",
+    label: "Headline",
+    icon: "H",
+    type: "Component",
+    name: "headline",
+    children: [],
+  },
 ];
 
 const contentItems = [
@@ -162,7 +211,7 @@ export default function Sidebar({ onSelectElement }) {
       {activeTab === "elements" && (
         <div>
           <ContentList>
-            {elements.map((item) => (
+            {components.map((item) => (
               <DraggableElementType
                 key={item.id}
                 item={item}

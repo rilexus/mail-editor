@@ -1,4 +1,4 @@
-import { getElement } from "../getElement";
+import { getComponent } from "../getElement";
 import styled from "styled-components";
 import { Elements } from "./Elements";
 
@@ -21,7 +21,7 @@ export const Element = ({
   onDrop,
   ...rest
 }) => {
-  const Elem = getElement(type);
+  const Elem = getComponent({ name: type });
   return (
     <div
       id={id}
@@ -39,7 +39,7 @@ export const Element = ({
         <Elements
           path={id}
           onDrop={(...args) => {
-            console.log(args);
+            // console.log(args);
             // onDrop()
           }}
           onClick={onClick}

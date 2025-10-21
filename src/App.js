@@ -8,7 +8,68 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 import { set } from "./utils/set";
 
-const initialElements = {
+const initialLayout = {
+  name: "root",
+  type: "layout",
+  attributes: {},
+  props: {},
+  children: [
+    // {
+    //   name: 'header',
+    //   type: "Component",
+    //   children: [],
+    //   props: {},
+    //   attributes: {}
+    // },
+    // {
+    //   name: "main",
+    //   type: "Component",
+    //   attributes: {},
+    //   props: {},
+    //   children: [
+    //     {
+    //       type: "Component",
+    //       name: "toc",
+    //       attributes: {},
+    //       props: {},
+    //       children: [],
+    //     },
+    //     {
+    //       type: "Component",
+    //       name: "content",
+    //       attributes: {},
+    //       props: {},
+    //       children: [
+    //         {
+    //           type: "Component",
+    //           name: "inner",
+    //           attributes: {},
+    //           props: {},
+    //           children: [
+    //             {
+    //               name: "headline",
+    //               type: "Component",
+    //               props: {
+    //                 template: "recordField",
+    //                 value: "subject_area_name",
+    //               },
+    //               attributes: {},
+    //               children: [],
+    //             },
+    //           ],
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // },
+    // {
+    //   name: "footer",
+    //   type: "Component",
+    //   props: {},
+    //   children: [],
+    //   attributes: {},
+    // },
+  ],
   // header: {},
   // main: {
   //   elements: {
@@ -32,9 +93,7 @@ const initialElements = {
 };
 
 export default function EmailEditor() {
-  const [elements, setElements] = useState(() => ({
-    elements: initialElements,
-  }));
+  const [layout, setLayout] = useState(() => initialLayout);
   const [selectedElement, setSelectedElement] = useState("picture");
   const [paddingsEnabled, setPaddingsEnabled] = useState(true);
   const [paddings, setPaddings] = useState({ L: 24, T: 24, R: 24, B: 24 });
@@ -49,13 +108,10 @@ export default function EmailEditor() {
         <DndProvider backend={HTML5Backend}>
           <Sidebar onSelectElement={setSelectedElement} />
           <Canvas
-            elements={elements.elements}
-            onClick={(id) => {
-              console.log(id);
-            }}
-            onDrop={(path, item) => {
-              setElements((e) => set(e, path, item));
-            }}
+            layout={layout}
+            setLayout={setLayout}
+            onClick={(id) => {}}
+            onDrop={(path, item) => {}}
           />
           <PropertiesPanel
             selectedElement={selectedElement}

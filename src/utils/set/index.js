@@ -10,6 +10,16 @@ const _set = (obj, keys, value) => {
 
   if (lastKey) {
     if (isNumber(key)) {
+      if (isArray(obj)) {
+        if (Number(key) >= obj.length) {
+          obj.push(value);
+          return [...obj];
+        }
+
+        obj[key] = value;
+        return [...obj];
+      }
+
       obj[key] = value;
       return { ...obj };
     }
