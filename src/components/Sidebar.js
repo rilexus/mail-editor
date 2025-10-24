@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   SidebarContainer,
   TabsContainer,
@@ -16,6 +16,8 @@ import {
 } from "./styles";
 import { useDrag } from "react-dnd";
 import { defaultComponents } from "../defaultComponents";
+import { useEditorStore } from "../state";
+import { add } from "../state/commands";
 
 const contentItems = [
   { id: "title", label: "Title", icon: "T" },
@@ -69,6 +71,12 @@ const DraggableElementType = ({ item, onClick }) => {
 export default function Sidebar({ onSelectElement }) {
   const [activeTab, setActiveTab] = useState("design");
   const [contentExpanded, setContentExpanded] = useState(true);
+
+  const store = useEditorStore((state) => state);
+
+  useEffect(() => {
+    store.run(add(1));
+  }, []);
 
   return (
     <SidebarContainer>

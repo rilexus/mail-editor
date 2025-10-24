@@ -1085,9 +1085,7 @@
               }
             },
             "main": {
-
               "template": "container",
-
               "elements": {
                 "toc": {
                   "template": "container",
@@ -1206,10 +1204,6 @@
                     "inner": {
                       "template": "container",
                       "elements": {
-                        "headline": {
-                          "template": "recordField",
-                          "value": "subject_area_name"
-                        },
                         "articles": {
                           "template": "article/loop",
                           "abstractClass": "abstract",
@@ -1406,6 +1400,10 @@
                               }
                             }
                           }
+                        },
+                        "headline": {
+                          "template": "recordField",
+                          "value": "subject_area_name"
                         }
                       }
                     }

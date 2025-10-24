@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import Canvas from "./components/Canvas";
@@ -6,12 +6,12 @@ import PropertiesPanel from "./components/PropertiesPanel";
 import { AppContainer, MainContent, HelpButton } from "./components/styles";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
-import { set } from "./utils/set";
 import {
-  StateProvider,
   useApplicationState,
   withApplicationState,
 } from "./providers/StateProvider";
+import { useEditorStore } from "./state";
+import { add } from "./state/commands";
 
 export default withApplicationState(function EmailEditor() {
   const [applicationState] = useApplicationState();

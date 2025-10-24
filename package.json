@@ -8,6 +8,7 @@
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
+    "react-merge-refs": "^3.0.2",
     "react-sunburst-chart": "^1.0.1",
     "statefull": "^1.1.0",
     "styled-components": "^6.1.13",

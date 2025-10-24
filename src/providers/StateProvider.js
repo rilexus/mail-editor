@@ -101,10 +101,12 @@ export const StateProvider = ({ children }) => {
 
   const selectComponent = (path) => {
     const selectedComponent = get(state.layout, path.split("."));
+
     if (!selectedComponent) {
-      log.warn("no component found");
+      log.warn(`No component found for path: ${path}`);
       return;
     }
+
     setState((prev) => ({
       ...prev,
       selectedComponent,
