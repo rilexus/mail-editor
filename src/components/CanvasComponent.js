@@ -1,6 +1,6 @@
 import { getComponent } from "./getElement";
 import styled from "styled-components";
-import { useOnClickOutside } from "usehooks-ts";
+import { useHover, useOnClickOutside } from "usehooks-ts";
 import { Fragment, useRef } from "react";
 import { DropArea } from "./DropArea";
 import { removeAt } from "../utils/removeAt";
@@ -15,14 +15,18 @@ const Controls = styled.div`
 `;
 
 const Hover = styled.div`
-  &:hover {
-    border: 3px solid #6366f1;
-    border-radius: 8px;
+  ${({ $hover }) => {
+    return $hover
+      ? `
+      border: 3px solid #6366f1;
+      border-radius: 8px;
 
-    ${Controls} {
-      display: inline;
-    }
-  }
+      ${Controls} {
+        display: inline;
+      }`
+      : "";
+  }}
+
   ${Controls} {
     display: none;
   }
@@ -52,6 +56,7 @@ export const CanvasComponent = ({
   );
 
   const ref = useRef(null);
+  const isHover = useHover(ref);
   const Component = getComponent(data);
 
   useOnClickOutside(ref, () => onClickOutside(path));
@@ -61,6 +66,7 @@ export const CanvasComponent = ({
   return (
     <Hover
       ref={mergeRefs([ref, drag])}
+      $hover={isHover}
       style={{
         position: "relative",
       }}
@@ -77,9 +83,6 @@ export const CanvasComponent = ({
           }}
           onDrop={(dropArea, item) => {
             let newChildren = [...data.children];
-
-            console.log(dropArea, item);
-
             const droppedItemPath = item.path.split(".");
             const droppedItemContainerPath = [...droppedItemPath]
               .slice(0, droppedItemPath.length - 1)
@@ -170,14 +173,6 @@ export const CanvasComponent = ({
                   }
 
                   onDrop(dropArea, insertAt(newChildren, dropAreaIndex, item));
-
-                  // onDrop(
-                  //   dropArea,
-                  //   insertAt(data.children, i + 1, {
-                  //     ...item,
-                  //     path: `${path}.children.${i + 1}`,
-                  //   })
-                  // );
                 }}
                 accept={accept}
               />

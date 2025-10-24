@@ -62,6 +62,9 @@ export default function Canvas({ onClick }) {
               let newChildren = [...layout.children];
 
               const droppedItemPath = item.path.split(".");
+              const droppedItemIndex = Number(
+                droppedItemPath[droppedItemPath.length - 1]
+              );
               const droppedItemContainerPath = [...droppedItemPath]
                 .slice(0, droppedItemPath.length - 1)
                 .join(".");
@@ -79,13 +82,11 @@ export default function Canvas({ onClick }) {
                 /* item is being reordered in the same children array */
                 droppedAreaContainerPath === droppedItemContainerPath
               ) {
-                const droppedItemIndex = Number(
-                  droppedItemPath[droppedItemPath.length - 1]
-                );
                 newChildren = removeAt(newChildren, droppedItemIndex);
               }
 
-              handleDrop(dropArea, insertAt(newChildren, dropAreaIndex, item));
+              newChildren = insertAt(newChildren, dropAreaIndex, item);
+              handleDrop(dropArea, newChildren);
             }}
             accept={["main", "header", "footer"]}
           />
