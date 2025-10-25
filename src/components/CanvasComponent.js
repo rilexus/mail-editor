@@ -73,7 +73,10 @@ export const CanvasComponent = ({
       style={{
         position: "relative",
       }}
-      onClick={() => onClick(path)}
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick?.(path);
+      }}
     >
       <Controls>
         <button onClick={() => onDelete(path, data)}>delete</button>

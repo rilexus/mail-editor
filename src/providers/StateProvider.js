@@ -114,27 +114,15 @@ export const StateProvider = ({ children }) => {
     }));
   };
 
-  const setLayout = (value) => {
-    let newLayout = {};
-    if (typeof value === "function") {
-      newLayout = value(state.layout);
-    } else {
-      newLayout = value;
-    }
-    setState((prev) => ({
-      ...prev,
-      layout: newLayout,
-    }));
-  };
-
   const run = (command) => {
     command.execute(state, setState);
   };
 
+  const undo = () => {};
+  const redo = () => {};
+
   return (
-    <Context.Provider
-      value={[state, { run, selectComponent, setState, setLayout }]}
-    >
+    <Context.Provider value={[state, { run, selectComponent, redo, undo }]}>
       {children}
     </Context.Provider>
   );

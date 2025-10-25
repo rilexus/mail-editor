@@ -3,6 +3,7 @@ import { insertAt } from "../utils/insertAt";
 import { set } from "../utils/set";
 import { remove } from "../utils/remove";
 import { Command } from "./Command";
+import { get } from "../utils/get";
 
 export const removeItemCommand = (path) => {
   return new Command(
@@ -13,6 +14,35 @@ export const removeItemCommand = (path) => {
           layout: remove(state.layout, path),
         };
       });
+    },
+    () => {}
+  );
+};
+
+export const deselectItemCommand = () => {
+  return new Command((state, setState) => {
+    setState((state) => {
+      return {
+        ...state,
+        selectedComponent: null,
+        selectedComponentPath: null,
+      };
+    });
+  });
+};
+
+export const selectItemCommand = (path) => {
+  return new Command(
+    (state, setState) => {
+      console.log(path);
+
+      const selectedComponent = get(state.layout, path);
+
+      setState((s) => ({
+        ...s,
+        selectedComponent,
+        selectedComponentPath: path,
+      }));
     },
     () => {}
   );

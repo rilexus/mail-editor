@@ -16,7 +16,12 @@ import { CanvasComponent } from "./CanvasComponent";
 import { DropArea } from "./DropArea";
 import { Fragment } from "react";
 import { useApplicationState } from "../providers/StateProvider";
-import { dropItemCommand, removeItemCommand } from "../commands";
+import {
+  deselectItemCommand,
+  dropItemCommand,
+  removeItemCommand,
+  selectItemCommand,
+} from "../commands";
 
 export default function Canvas() {
   const [
@@ -25,23 +30,15 @@ export default function Canvas() {
       layout: { children },
       selectedComponentPath,
     },
-    { selectComponent, setLayout, setState, run },
+    { setState, run },
   ] = useApplicationState();
 
   const handleSelectComponent = (path) => {
-    selectComponent(path);
+    run(selectItemCommand(path));
   };
 
   const handleDeselectComponent = (path) => {
-    if (selectedComponentPath === path) {
-      setState((s) => {
-        return {
-          ...s,
-          selectedComponentPath: null,
-          selectedComponent: null,
-        };
-      });
-    }
+    run(deselectItemCommand());
   };
 
   return (
