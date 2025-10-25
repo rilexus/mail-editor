@@ -127,8 +127,14 @@ export const StateProvider = ({ children }) => {
     }));
   };
 
+  const run = (command) => {
+    command.execute(state, setState);
+  };
+
   return (
-    <Context.Provider value={[state, { selectComponent, setState, setLayout }]}>
+    <Context.Provider
+      value={[state, { run, selectComponent, setState, setLayout }]}
+    >
       {children}
     </Context.Provider>
   );

@@ -3,10 +3,10 @@ import styled from "styled-components";
 import { useHover, useOnClickOutside } from "usehooks-ts";
 import { Fragment, useRef } from "react";
 import { DropArea } from "./DropArea";
-import { removeAt } from "../utils/removeAt";
-import { insertAt } from "../utils/insertAt";
 import { useDrag } from "react-dnd";
 import { mergeRefs } from "react-merge-refs";
+import { useApplicationState } from "../providers/StateProvider";
+import { dropItemCommand } from "../commands";
 
 const Controls = styled.div`
   background: rgba(99, 102, 241, 0.06);
@@ -41,6 +41,8 @@ export const CanvasComponent = ({
   onClickOutside,
   ...props
 }) => {
+  const [, { run }] = useApplicationState();
+
   const [{ isDragging }, drag, dragPreview] = useDrag(
     () => ({
       // "type" is required. It is used by the "accept" specification of drop targets.
@@ -61,7 +63,7 @@ export const CanvasComponent = ({
 
   useOnClickOutside(ref, () => onClickOutside(path));
 
-  const { accept } = data;
+  const { accept, children } = data;
 
   return (
     <Hover
@@ -81,35 +83,12 @@ export const CanvasComponent = ({
           data={{
             path: `${path}.children.0`,
           }}
-          onDrop={(dropArea, item) => {
-            let newChildren = [...data.children];
-            const droppedItemPath = item.path.split(".");
-            const droppedItemContainerPath = [...droppedItemPath]
-              .slice(0, droppedItemPath.length - 1)
-              .join(".");
-
-            const dropAreaPath = dropArea.path.split(".");
-            const droppedAreaContainerPath = [...dropAreaPath]
-              .slice(0, dropAreaPath.length - 1)
-              .join(".");
-
-            const dropAreaIndex = Number(dropAreaPath[dropAreaPath.length - 1]);
-
-            if (
-              /* item is being reordered in the same children array */
-              droppedAreaContainerPath === droppedItemContainerPath
-            ) {
-              const droppedItemIndex = Number(
-                droppedItemPath[droppedItemPath.length - 1]
-              );
-              newChildren = removeAt(newChildren, droppedItemIndex);
-            }
-
-            onDrop(dropArea, insertAt(newChildren, dropAreaIndex, item));
-          }}
+          onDrop={(dropArea, item) =>
+            run(dropItemCommand(dropArea, item, children))
+          }
           accept={accept}
         />
-        {data.children.map((child, i) => {
+        {children.map((child, i) => {
           return (
             <Fragment key={`${child.name}.children.${i}`}>
               <div
@@ -131,49 +110,9 @@ export const CanvasComponent = ({
                 data={{
                   path: `${path}.children.${i + 1}`,
                 }}
-                onDrop={(dropArea, item) => {
-                  let newChildren = [...data.children];
-
-                  const droppedItemPath = item.path.split(".");
-                  const droppedItemIndex =
-                    droppedItemPath[droppedItemPath.length - 1];
-                  const droppedItemContainerPath = [...droppedItemPath]
-                    .slice(0, droppedItemPath.length - 1)
-                    .join(".");
-
-                  const dropAreaPath = dropArea.path.split(".");
-                  const droppedAreaContainerPath = [...dropAreaPath]
-                    .slice(0, dropAreaPath.length - 1)
-                    .join(".");
-
-                  const dropAreaIndex = Number(
-                    dropAreaPath[dropAreaPath.length - 1]
-                  );
-
-                  if (
-                    /* item is being reordered in the same children array (same level) */
-                    droppedAreaContainerPath === droppedItemContainerPath
-                  ) {
-                    newChildren = removeAt(newChildren, droppedItemIndex);
-
-                    if (dropAreaIndex > droppedItemIndex) {
-                      newChildren = insertAt(
-                        newChildren,
-                        dropAreaIndex - 1,
-                        item
-                      );
-                    }
-
-                    if (dropAreaIndex <= droppedItemIndex) {
-                      newChildren = insertAt(newChildren, dropAreaIndex, item);
-                    }
-
-                    onDrop(dropArea, newChildren);
-                    return;
-                  }
-
-                  onDrop(dropArea, insertAt(newChildren, dropAreaIndex, item));
-                }}
+                onDrop={(dropArea, item) =>
+                  run(dropItemCommand(dropArea, item, children))
+                }
                 accept={accept}
               />
             </Fragment>

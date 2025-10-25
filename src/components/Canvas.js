@@ -12,27 +12,20 @@ import {
   DownloadButton,
   AddButton,
 } from "./styles";
-import { handleAddComponent } from "../utils/layout";
 import { CanvasComponent } from "./CanvasComponent";
 import { DropArea } from "./DropArea";
-import { Fragment, useState } from "react";
-import { insertAt } from "../utils/insertAt";
-import { removeAt } from "../utils/removeAt";
+import { Fragment } from "react";
 import { useApplicationState } from "../providers/StateProvider";
-import { get } from "../utils/get";
 
-export default function Canvas({ onClick }) {
-  const [applicationState, { selectComponent, setLayout, setState }] =
+import { dropItemCommand } from "../commands";
+
+export default function Canvas() {
+  const [applicationState, { selectComponent, setLayout, setState, run }] =
     useApplicationState();
 
-  const { layout } = applicationState;
-
-  const handleDrop = (dropArea, item) => {
-    const dropAreaPath = dropArea.path.split(".");
-    dropAreaPath.pop(/* mutates */);
-
-    setLayout(handleAddComponent(dropAreaPath.join("."), item));
-  };
+  const {
+    layout: { children },
+  } = applicationState;
 
   const handleSelectComponent = (path) => {
     selectComponent(path);
@@ -58,39 +51,12 @@ export default function Canvas({ onClick }) {
             data={{
               path: "children.0",
             }}
-            onDrop={(dropArea, item) => {
-              let newChildren = [...layout.children];
-
-              const droppedItemPath = item.path.split(".");
-              const droppedItemIndex = Number(
-                droppedItemPath[droppedItemPath.length - 1]
-              );
-              const droppedItemContainerPath = [...droppedItemPath]
-                .slice(0, droppedItemPath.length - 1)
-                .join(".");
-
-              const dropAreaPath = dropArea.path.split(".");
-              const droppedAreaContainerPath = [...dropAreaPath]
-                .slice(0, dropAreaPath.length - 1)
-                .join(".");
-
-              const dropAreaIndex = Number(
-                dropAreaPath[dropAreaPath.length - 1]
-              );
-
-              if (
-                /* item is being reordered in the same children array */
-                droppedAreaContainerPath === droppedItemContainerPath
-              ) {
-                newChildren = removeAt(newChildren, droppedItemIndex);
-              }
-
-              newChildren = insertAt(newChildren, dropAreaIndex, item);
-              handleDrop(dropArea, newChildren);
-            }}
+            onDrop={(dropArea, item) =>
+              run(dropItemCommand(dropArea, item, children))
+            }
             accept={["main", "header", "footer"]}
           />
-          {layout.children.map((child, i) => {
+          {children.map((child, i) => {
             const path = `children.${i}`;
             const childWithPath = { ...child, path };
 
@@ -100,27 +66,28 @@ export default function Canvas({ onClick }) {
                   onClickOutside={handleDeselectComponent}
                   onClick={handleSelectComponent}
                   onDelete={(path, item) => {
-                    const pathArray = item.path.split(".");
+                    // const pathArray = item.path.split(".");
                     // index of clicked component in children array
-                    const index = Number(
-                      pathArray.pop(/* remove the last element add mutates the pathArray */)
-                    );
+                    // const index = Number(
+                    //   pathArray.pop(/* remove the last element add mutates the pathArray */)
+                    // );
                     // get the array the clicked component is in
-                    const children = get(
-                      layout,
-                      pathArray /* pathArray is without the index */
-                    );
-
-                    handleDrop(
-                      {
-                        path: pathArray.join("."),
-                      },
-                      // removes the components from the array it is in
-                      removeAt(children, index)
-                    );
+                    // const children = get(
+                    //   data,
+                    //   pathArray /* pathArray is without the index */
+                    // );
+                    // handleDrop(
+                    //   {
+                    //     path: pathArray.join("."),
+                    //   },
+                    //   // removes the components from the array it is in
+                    //   removeAt(children, index)
+                    // );
                   }}
                   path={path}
-                  onDrop={handleDrop}
+                  onDrop={(dropArea, item) =>
+                    run(dropItemCommand(dropArea, item, children))
+                  }
                   data={childWithPath}
                   {...child.props}
                 />
@@ -129,54 +96,7 @@ export default function Canvas({ onClick }) {
                     path: `children.${i + 1}`,
                   }}
                   onDrop={(dropArea, item) => {
-                    let newChildren = [...layout.children];
-
-                    const droppedItemPath = item.path.split(".");
-                    const droppedItemIndex =
-                      droppedItemPath[droppedItemPath.length - 1];
-                    const droppedItemContainerPath = [...droppedItemPath]
-                      .slice(0, droppedItemPath.length - 1)
-                      .join(".");
-
-                    const dropAreaPath = dropArea.path.split(".");
-                    const droppedAreaContainerPath = [...dropAreaPath]
-                      .slice(0, dropAreaPath.length - 1)
-                      .join(".");
-
-                    const dropAreaIndex = Number(
-                      dropAreaPath[dropAreaPath.length - 1]
-                    );
-
-                    if (
-                      /* item is being reordered in the same children array (same level) */
-                      droppedAreaContainerPath === droppedItemContainerPath
-                    ) {
-                      newChildren = removeAt(newChildren, droppedItemIndex);
-
-                      if (dropAreaIndex > droppedItemIndex) {
-                        newChildren = insertAt(
-                          newChildren,
-                          dropAreaIndex - 1,
-                          item
-                        );
-                      }
-
-                      if (dropAreaIndex <= droppedItemIndex) {
-                        newChildren = insertAt(
-                          newChildren,
-                          dropAreaIndex,
-                          item
-                        );
-                      }
-
-                      handleDrop(dropArea, newChildren);
-                      return;
-                    }
-
-                    handleDrop(
-                      dropArea,
-                      insertAt(newChildren, dropAreaIndex, item)
-                    );
+                    run(dropItemCommand(dropArea, item, children));
                   }}
                   accept={["main", "header", "footer"]}
                 />
