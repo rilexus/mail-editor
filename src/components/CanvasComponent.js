@@ -1,15 +1,16 @@
 import { getComponent } from "./getElement";
 import styled from "styled-components";
-import { useHover, useOnClickOutside } from "usehooks-ts";
-import { Fragment, useRef } from "react";
+import { useOnClickOutside } from "usehooks-ts";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { DropArea } from "./DropArea";
 import { useDrag } from "react-dnd";
 import { mergeRefs } from "react-merge-refs";
 import { useApplicationState } from "../providers/StateProvider";
 import { dropItemCommand } from "../commands";
+import { useOver } from "../hooks/useOver";
 
 const Controls = styled.div`
-  background: rgba(99, 102, 241, 0.06);
+  background: rgba(165, 167, 246, 0.06);
   position: absolute;
   inset: 0;
 `;
@@ -18,18 +19,16 @@ const Hover = styled.div`
   ${({ $hover }) => {
     return $hover
       ? `
-      border: 3px solid #6366f1;
+      border: 2px solid #6366f1;
       border-radius: 8px;
 
-      ${Controls} {
+      & > ${Controls} {
         display: inline;
       }`
-      : "";
+      : `& > ${Controls} {
+          display: none;
+        }`;
   }}
-
-  ${Controls} {
-    display: none;
-  }
 `;
 
 export const CanvasComponent = ({
@@ -58,7 +57,9 @@ export const CanvasComponent = ({
   );
 
   const ref = useRef(null);
-  const isHover = useHover(ref);
+
+  const isHover = useOver(ref);
+
   const Component = getComponent(data);
 
   useOnClickOutside(ref, () => onClickOutside(path));
@@ -74,9 +75,9 @@ export const CanvasComponent = ({
       }}
       onClick={() => onClick(path)}
     >
-      {/*<Controls>*/}
-      {/*  <button onClick={() => onDelete(path, data)}>delete</button>*/}
-      {/*</Controls>*/}
+      <Controls>
+        <button onClick={() => onDelete(path, data)}>delete</button>
+      </Controls>
 
       <Component {...props} data={data} onDrop={onDrop} path={path}>
         <DropArea

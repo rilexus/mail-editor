@@ -20,19 +20,20 @@ import { useApplicationState } from "../providers/StateProvider";
 import { dropItemCommand } from "../commands";
 
 export default function Canvas() {
-  const [applicationState, { selectComponent, setLayout, setState, run }] =
-    useApplicationState();
-
-  const {
-    layout: { children },
-  } = applicationState;
+  const [
+    {
+      layout: { children },
+      selectedComponentPath,
+    },
+    { selectComponent, setLayout, setState, run },
+  ] = useApplicationState();
 
   const handleSelectComponent = (path) => {
     selectComponent(path);
   };
 
   const handleDeselectComponent = (path) => {
-    if (applicationState.selectedComponentPath === path) {
+    if (selectedComponentPath === path) {
       setState((s) => {
         return {
           ...s,

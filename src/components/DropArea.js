@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import { useDrop } from "react-dnd";
-import React from "react";
 
 export const Area = styled.div`
-  height: 10px;
-  ${({ $hover }) => ($hover ? "border: 2px dashed gray" : "")};
+  min-height: 10px;
+  min-width: 10px;
+  ${({ $canDrop }) => ($canDrop ? "border: 2px dashed gray" : "")};
 `;
 
 export const DropArea = ({ data, accept, onDrop, onHover }) => {
@@ -25,5 +25,5 @@ export const DropArea = ({ data, accept, onDrop, onHover }) => {
     }),
     [data]
   );
-  return <Area $hover={canDrop} ref={drop} />;
+  return <Area $canDrop={canDrop} ref={drop} />;
 };
