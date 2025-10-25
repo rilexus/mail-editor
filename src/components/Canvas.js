@@ -16,12 +16,12 @@ import { CanvasComponent } from "./CanvasComponent";
 import { DropArea } from "./DropArea";
 import { Fragment } from "react";
 import { useApplicationState } from "../providers/StateProvider";
-
-import { dropItemCommand } from "../commands";
+import { dropItemCommand, removeItemCommand } from "../commands";
 
 export default function Canvas() {
   const [
     {
+      layout,
       layout: { children },
       selectedComponentPath,
     },
@@ -66,25 +66,7 @@ export default function Canvas() {
                 <CanvasComponent
                   onClickOutside={handleDeselectComponent}
                   onClick={handleSelectComponent}
-                  onDelete={(path, item) => {
-                    // const pathArray = item.path.split(".");
-                    // index of clicked component in children array
-                    // const index = Number(
-                    //   pathArray.pop(/* remove the last element add mutates the pathArray */)
-                    // );
-                    // get the array the clicked component is in
-                    // const children = get(
-                    //   data,
-                    //   pathArray /* pathArray is without the index */
-                    // );
-                    // handleDrop(
-                    //   {
-                    //     path: pathArray.join("."),
-                    //   },
-                    //   // removes the components from the array it is in
-                    //   removeAt(children, index)
-                    // );
-                  }}
+                  onDelete={(path) => run(removeItemCommand(path))}
                   path={path}
                   onDrop={(dropArea, item) =>
                     run(dropItemCommand(dropArea, item, children))

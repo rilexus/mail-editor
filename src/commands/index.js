@@ -1,13 +1,22 @@
 import { removeAt } from "../utils/removeAt";
 import { insertAt } from "../utils/insertAt";
 import { set } from "../utils/set";
+import { remove } from "../utils/remove";
+import { Command } from "./Command";
 
-class Command {
-  constructor(execute, reverse) {
-    this.execute = execute;
-    this.reverse = reverse;
-  }
-}
+export const removeItemCommand = (path) => {
+  return new Command(
+    (state, setState) => {
+      setState((state) => {
+        return {
+          ...state,
+          layout: remove(state.layout, path),
+        };
+      });
+    },
+    () => {}
+  );
+};
 
 export const dropItemCommand = (dropArea, item, children) => {
   return new Command(
@@ -39,17 +48,17 @@ export const dropItemCommand = (dropArea, item, children) => {
         // insert item depending from where it was dragged
         if (dropAreaIndex > droppedItemIndex) {
           // dragged from top to bottom
-          newChildren = insertAt(newChildren, dropAreaIndex - 1, item);
+          newChildren = insertAt(newChildren, dropAreaIndex - 1, { ...item });
         }
 
         if (dropAreaIndex <= droppedItemIndex) {
           // dragged from the top
-          newChildren = insertAt(newChildren, dropAreaIndex, item);
+          newChildren = insertAt(newChildren, dropAreaIndex, { ...item });
         }
       } else {
         // new item dropped to the canvas in between other items
         // just insert
-        newChildren = insertAt(newChildren, dropAreaIndex, item);
+        newChildren = insertAt(newChildren, dropAreaIndex, { ...item });
       }
 
       dropAreaPath.pop(/* mutates */);
