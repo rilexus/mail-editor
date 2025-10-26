@@ -17,18 +17,16 @@ import { DropArea } from "./DropArea";
 import { Fragment } from "react";
 import { useApplicationState } from "../providers/StateProvider";
 import {
+  selectItemCommand,
   deselectItemCommand,
   dropItemCommand,
   removeItemCommand,
-  selectItemCommand,
 } from "../commands";
 
 export default function Canvas() {
   const [
     {
-      layout,
       layout: { children },
-      selectedComponentPath,
     },
     { setState, run },
   ] = useApplicationState();
