@@ -16,8 +16,8 @@ const Controls = styled.div`
 `;
 
 const Hover = styled.div`
-  ${({ $hover }) => {
-    return $hover
+  ${({ $active }) => {
+    return $active
       ? `
       border: 2px solid #6366f1;
       border-radius: 8px;
@@ -33,43 +33,45 @@ const Hover = styled.div`
 
 export const CanvasComponent = ({
   path,
-  data,
+  item,
   onDrop,
   onDelete,
   onClick,
   onClickOutside,
   ...props
 }) => {
-  const [, { run }] = useApplicationState();
+  const [{ selectedComponentPath }, { run }] = useApplicationState();
+
+  const isSelected = selectedComponentPath === path;
 
   const [{ isDragging }, drag, dragPreview] = useDrag(
     () => ({
       // "type" is required. It is used by the "accept" specification of drop targets.
-      type: data.name,
-      item: data,
+      type: item.name,
+      item: item,
       // The collect function utilizes a "monitor" instance (see the Overview for what this is)
       // to pull important pieces of state from the DnD system.
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
     }),
-    [data]
+    [item]
   );
 
   const ref = useRef(null);
 
   const isHover = useOver(ref);
 
-  const Component = getComponent(data);
+  const Component = getComponent(item);
 
   useOnClickOutside(ref, () => onClickOutside(path));
 
-  const { accept, children } = data;
+  const { accept, children } = item;
 
   return (
     <Hover
       ref={mergeRefs([ref, drag])}
-      $hover={isHover}
+      $active={isHover || isSelected}
       style={{
         position: "relative",
       }}
@@ -79,17 +81,21 @@ export const CanvasComponent = ({
       }}
     >
       <Controls>
-        <button onClick={() => onDelete(path, data)}>delete</button>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete(item);
+          }}
+        >
+          Delete
+        </button>
       </Controls>
-
-      <Component {...props} data={data} onDrop={onDrop} path={path}>
+      <Component {...props} item={item} onDrop={onDrop} path={path}>
         <DropArea
           data={{
             path: `${path}.children.0`,
           }}
-          onDrop={(dropArea, item) =>
-            run(dropItemCommand(dropArea, item, children))
-          }
+          onDrop={(dropArea, item) => run(dropItemCommand(dropArea, item))}
           accept={accept}
         />
         {children.map((child, i) => {
@@ -105,7 +111,11 @@ export const CanvasComponent = ({
                   onClickOutside={onClickOutside}
                   onClick={onClick}
                   key={i}
-                  data={{ ...child, path: `${path}.children.${i}` }}
+                  item={{
+                    ...child,
+                    path: `${path}.children.${i}`,
+                    parentPath: item.path,
+                  }}
                   onDrop={onDrop}
                   path={`${path}.children.${i}`}
                 />
@@ -115,7 +125,7 @@ export const CanvasComponent = ({
                   path: `${path}.children.${i + 1}`,
                 }}
                 onDrop={(dropArea, item) =>
-                  run(dropItemCommand(dropArea, item, children))
+                  run(dropItemCommand(dropArea, item))
                 }
                 accept={accept}
               />

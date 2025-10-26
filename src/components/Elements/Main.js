@@ -1,4 +1,4 @@
-export const Main = ({ children, data, parent, path, onDrop, ...rest }) => {
+export const Main = ({ children }) => {
   return (
     <div
       style={{

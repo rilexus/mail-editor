@@ -5,13 +5,13 @@ import { remove } from "../utils/remove";
 import { Command } from "./Command";
 import { get } from "../utils/get";
 
-export const removeItemCommand = (path) => {
+export const removeItemCommand = (item) => {
   return new Command(
     (state, setState) => {
       setState((state) => {
         return {
           ...state,
-          layout: remove(state.layout, path),
+          layout: remove(state.layout, item.path),
         };
       });
     },
@@ -34,8 +34,6 @@ export const deselectItemCommand = () => {
 export const selectItemCommand = (path) => {
   return new Command(
     (state, setState) => {
-      console.log(path);
-
       const selectedComponent = get(state.layout, path);
 
       setState((s) => ({
@@ -48,11 +46,9 @@ export const selectItemCommand = (path) => {
   );
 };
 
-export const dropItemCommand = (dropArea, item, children) => {
+export const dropItemCommand = (dropArea, item) => {
   return new Command(
     (state, setState) => {
-      let newChildren = [...children];
-
       const droppedItemPath = item.path.split(".");
       const droppedItemIndex = Number(
         droppedItemPath[droppedItemPath.length - 1]
@@ -65,6 +61,8 @@ export const dropItemCommand = (dropArea, item, children) => {
       const droppedAreaContainerPath = [...dropAreaPath]
         .slice(0, dropAreaPath.length - 1)
         .join(".");
+
+      let newChildren = get(state.layout, droppedAreaContainerPath);
 
       const dropAreaIndex = Number(dropAreaPath[dropAreaPath.length - 1]);
 

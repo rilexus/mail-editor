@@ -49,26 +49,27 @@ export default function Canvas() {
             data={{
               path: "children.0",
             }}
-            onDrop={(dropArea, item) =>
-              run(dropItemCommand(dropArea, item, children))
-            }
+            onDrop={(dropArea, item) => run(dropItemCommand(dropArea, item))}
             accept={["main", "header", "footer"]}
           />
           {children.map((child, i) => {
             const path = `children.${i}`;
-            const childWithPath = { ...child, path };
+            // initial path, first layer in the canvas
+            const item = { ...child, path, parentPath: "" };
 
             return (
               <Fragment key={i}>
                 <CanvasComponent
                   onClickOutside={handleDeselectComponent}
                   onClick={handleSelectComponent}
-                  onDelete={(path) => run(removeItemCommand(path))}
+                  onDelete={(item) => {
+                    run(removeItemCommand(item));
+                  }}
                   path={path}
                   onDrop={(dropArea, item) =>
-                    run(dropItemCommand(dropArea, item, children))
+                    run(dropItemCommand(dropArea, item))
                   }
-                  data={childWithPath}
+                  item={item}
                   {...child.props}
                 />
                 <DropArea
@@ -76,7 +77,7 @@ export default function Canvas() {
                     path: `children.${i + 1}`,
                   }}
                   onDrop={(dropArea, item) => {
-                    run(dropItemCommand(dropArea, item, children));
+                    run(dropItemCommand(dropArea, item));
                   }}
                   accept={["main", "header", "footer"]}
                 />
