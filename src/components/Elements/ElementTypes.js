@@ -7,4 +7,7 @@ export const ElementTypes = {
   inner: "inner",
   headline: "headline",
   articles: "articles",
+  vendor: "vendor",
+  copyright: "copyright",
+  license: "license",
 };

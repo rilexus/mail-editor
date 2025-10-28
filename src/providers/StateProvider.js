@@ -94,25 +94,13 @@ const initialState = {
 
 const Context = createContext([initialState, {}]);
 
-export const useApplicationState = () => useContext(Context);
+export const useApplicationState = (selector) => {
+  const state = useContext(Context);
+  return selector ? selector(state) : state;
+};
 
 export const StateProvider = ({ children }) => {
   const [state, setState] = useState(initialState);
-
-  const selectComponent = (path) => {
-    const selectedComponent = get(state.layout, path.split("."));
-
-    if (!selectedComponent) {
-      log.warn(`No component found for path: ${path}`);
-      return;
-    }
-
-    setState((prev) => ({
-      ...prev,
-      selectedComponent,
-      selectedComponentPath: path,
-    }));
-  };
 
   const run = (command) => {
     command.execute(state, setState);
@@ -122,7 +110,7 @@ export const StateProvider = ({ children }) => {
   const redo = () => {};
 
   return (
-    <Context.Provider value={[state, { run, selectComponent, redo, undo }]}>
+    <Context.Provider value={{ ...state, run, redo, undo }}>
       {children}
     </Context.Provider>
   );

@@ -23,13 +23,71 @@ import {
   removeItemCommand,
 } from "../commands";
 
+import defaultConfig from "../default.json";
+
+const getAttributes = (node) => {
+  const attributeKeys = [
+    "template",
+    "type",
+    "value",
+    "wrapInSpan",
+    "anchor",
+    "toc",
+    "class",
+    "messageKey",
+    "classKey",
+    "dataIndex",
+    "recordFieldClass",
+    "abstractClass",
+    "articleClass",
+    "link",
+    "wrap",
+    "separator",
+    "fields",
+  ];
+
+  return Object.entries(node).reduce((acc, [key, value]) => {
+    if (attributeKeys.includes(key)) {
+      return {
+        ...acc,
+        [key]: value,
+      };
+    }
+    return acc;
+  }, {});
+};
+
+const mailer2TemplateToCanvasLayout = (template) => {
+  const run = (node) => {
+    const { elements, articleElements } = node;
+
+    return {
+      attributes: getAttributes(node),
+      children: !!elements
+        ? Object.entries(elements).reduce((acc, [key, value]) => {
+            return [...acc, { name: key, ...run(value) }];
+          }, [])
+        : !!articleElements
+        ? Object.entries(articleElements).reduce((acc, [key, value]) => {
+            return [...acc, { name: key, ...run(value) }];
+          }, [])
+        : [],
+    };
+  };
+
+  return run(template);
+};
+
+console.log(
+  mailer2TemplateToCanvasLayout(
+    defaultConfig.system.mailer2.templates.mediaReviewA
+  )
+);
+
 export default function Canvas() {
-  const [
-    {
-      layout: { children },
-    },
-    { setState, run },
-  ] = useApplicationState();
+  const { run, children } = useApplicationState(
+    ({ layout: { children }, run }) => ({ children, run })
+  );
 
   const handleSelectComponent = (path) => {
     run(selectItemCommand(path));

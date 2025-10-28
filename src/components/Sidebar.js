@@ -18,6 +18,7 @@ import { useDrag } from "react-dnd";
 import { defaultComponents } from "../defaultComponents";
 import { useEditorStore } from "../state";
 import { add } from "../state/commands";
+import { useApplicationState } from "../providers/StateProvider";
 
 const contentItems = [
   { id: "title", label: "Title", icon: "T" },
@@ -30,17 +31,23 @@ const contentItems = [
   { id: "footer", label: "Footer", icon: "≡" },
 ];
 
-const DraggableElementType = ({ item, onClick }) => {
-  const [{ isDragging }, drag, dragPreview] = useDrag(() => ({
-    // "type" is required. It is used by the "accept" specification of drop targets.
-    type: item.name,
-    item,
-    // The collect function utilizes a "monitor" instance (see the Overview for what this is)
-    // to pull important pieces of state from the DnD system.
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
+const DraggableElementType = ({ item, onClick, canDrag = true }) => {
+  const [{ isDragging }, drag, dragPreview] = useDrag(
+    () => ({
+      // "type" is required. It is used by the "accept" specification of drop targets.
+      type: item.name,
+      item,
+      canDrag: () => {
+        return canDrag;
+      },
+      // The collect function utilizes a "monitor" instance (see the Overview for what this is)
+      // to pull important pieces of state from the DnD system.
+      collect: (monitor) => ({
+        isDragging: monitor.isDragging(),
+      }),
     }),
-  }));
+    [canDrag]
+  );
 
   return (
     <ElementType key={item.id} onClick={onClick} ref={dragPreview}>
@@ -49,6 +56,7 @@ const DraggableElementType = ({ item, onClick }) => {
           display: "flex",
           alignItems: "center",
           gap: "12px",
+          opacity: canDrag ? 1 : 0.2,
         }}
       >
         <ItemIcon>{item.icon}</ItemIcon>
@@ -69,6 +77,10 @@ const DraggableElementType = ({ item, onClick }) => {
 };
 
 export default function Sidebar({ onSelectElement }) {
+  const selectedComponent = useApplicationState(
+    ({ selectedComponent }) => selectedComponent
+  );
+
   const [activeTab, setActiveTab] = useState("design");
   const [contentExpanded, setContentExpanded] = useState(true);
 
@@ -161,34 +173,21 @@ export default function Sidebar({ onSelectElement }) {
       {activeTab === "elements" && (
         <div>
           <ContentList>
-            {defaultComponents.map((item) => (
-              <DraggableElementType
-                key={item.id}
-                item={item}
-                onClick={() => onSelectElement(item.id)}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "12px",
-                  }}
-                >
-                  <ItemIcon>{item.icon}</ItemIcon>
-                  <ItemLabel>{item.label}</ItemLabel>
-                </div>
-                <DragHandle>
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <circle cx="6" cy="4" r="1" fill="currentColor" />
-                    <circle cx="10" cy="4" r="1" fill="currentColor" />
-                    <circle cx="6" cy="8" r="1" fill="currentColor" />
-                    <circle cx="10" cy="8" r="1" fill="currentColor" />
-                    <circle cx="6" cy="12" r="1" fill="currentColor" />
-                    <circle cx="10" cy="12" r="1" fill="currentColor" />
-                  </svg>
-                </DragHandle>
-              </DraggableElementType>
-            ))}
+            {defaultComponents.map((item) => {
+              const canDrag = !!selectedComponent
+                ? selectedComponent.accept.includes(item.name)
+                : true;
+
+              console.log(item.name, canDrag);
+              return (
+                <DraggableElementType
+                  key={item.id}
+                  item={item}
+                  canDrag={canDrag}
+                  onClick={() => onSelectElement(item.id)}
+                />
+              );
+            })}
           </ContentList>
         </div>
       )}

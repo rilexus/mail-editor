@@ -40,7 +40,10 @@ export const CanvasComponent = ({
   onClickOutside,
   ...props
 }) => {
-  const [{ selectedComponentPath }, { run }] = useApplicationState();
+  const selectedComponentPath = useApplicationState(
+    ({ selectedComponentPath }) => selectedComponentPath
+  );
+  const run = useApplicationState(({ run }) => run);
 
   const isSelected = selectedComponentPath === path;
 

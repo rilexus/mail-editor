@@ -9,12 +9,46 @@ export const defaultComponents = [
     attributes: {},
     children: [],
   },
+
+  {
+    id: "copyright",
+    label: "Copyright",
+    icon: "",
+    name: "copyright",
+    accept: [],
+    path: "",
+    attributes: {},
+    children: [],
+  },
+
+  {
+    id: "license",
+    label: "License",
+    icon: "",
+    name: "license",
+    accept: [],
+    path: "",
+    attributes: {},
+    children: [],
+  },
+
+  {
+    id: "vendor",
+    label: "Vendor",
+    icon: "",
+    name: "vendor",
+    accept: [],
+    path: "",
+    attributes: {},
+    children: [],
+  },
+
   {
     id: "footer",
     label: "Footer",
     icon: "",
     name: "footer",
-    accept: [],
+    accept: ["copyright", "license", "vendor"],
     path: "",
     attributes: {},
     children: [],

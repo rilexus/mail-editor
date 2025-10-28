@@ -36,8 +36,9 @@ export default function PropertiesPanel({
   blendMode,
   setBlendMode,
 }) {
-  const [applicationState, { selectComponent }] = useApplicationState();
-  const { selectedComponent } = applicationState;
+  const selectedComponent = useApplicationState(
+    ({ selectedComponent }) => selectedComponent
+  );
   const label = selectedComponent?.label;
 
   return (

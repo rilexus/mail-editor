@@ -14,7 +14,9 @@ import { useEditorStore } from "./state";
 import { add } from "./state/commands";
 
 export default withApplicationState(function EmailEditor() {
-  const [applicationState] = useApplicationState();
+  const selectedComponent = useApplicationState(
+    ({ selectedComponent }) => selectedComponent
+  );
 
   const [selectedElement, setSelectedElement] = useState("picture");
   const [paddingsEnabled, setPaddingsEnabled] = useState(true);
@@ -29,8 +31,8 @@ export default withApplicationState(function EmailEditor() {
       <MainContent>
         <DndProvider backend={HTML5Backend}>
           <Sidebar onSelectElement={setSelectedElement} />
-          <Canvas onClick={(id) => {}} onDrop={(path, item) => {}} />
-          {applicationState.selectedComponent && (
+          <Canvas />
+          {selectedComponent && (
             <PropertiesPanel
               selectedElement={selectedElement}
               paddingsEnabled={paddingsEnabled}

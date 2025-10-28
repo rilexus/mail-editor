@@ -7,6 +7,10 @@ import { Content } from "./Elements/Content";
 import { Inner } from "./Elements/Inner";
 import { Headline } from "./Elements/Headline";
 import { Articles } from "./Elements/Articles";
+import { log } from "../services/log";
+import { License } from "./Elements/License";
+import { Copyright } from "./Elements/Copyright";
+import { Vendor } from "./Elements/Vendor";
 
 export const getComponent = ({ name }) => {
   switch (name) {
@@ -26,8 +30,14 @@ export const getComponent = ({ name }) => {
       return Headline;
     case ElementTypes.articles:
       return Articles;
-
+    case ElementTypes.license:
+      return License;
+    case ElementTypes.copyright:
+      return Copyright;
+    case ElementTypes.vendor:
+      return Vendor;
     default: {
+      log.warn(`No "${name}" component found!`);
       return () => null;
     }
   }
