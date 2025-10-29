@@ -230,8 +230,8 @@ export const Tab = styled.button`
   background: none;
   border: none;
   font-size: 14px;
-  font-weight: ${(props) => (props.active ? "600" : "500")};
-  color: ${(props) => (props.active ? "#1f2937" : "#6b7280")};
+  font-weight: ${(props) => (props.$active ? "600" : "500")};
+  color: ${(props) => (props.$active ? "#1f2937" : "#6b7280")};
   cursor: pointer;
   transition: color 0.2s;
 
@@ -625,7 +625,7 @@ export const PaddingsHeader = styled.div`
 export const PaddingsToggle = styled.button`
   width: 44px;
   height: 24px;
-  background: ${(props) => (props.$active ? "#6366f1" : "#d1d5db")};
+  background: ${(props) => (props.active ? "#6366f1" : "#d1d5db")};
   border: none;
   border-radius: 12px;
   position: relative;
@@ -635,7 +635,7 @@ export const PaddingsToggle = styled.button`
   div {
     position: absolute;
     top: 2px;
-    left: ${(props) => (props.$active ? "22px" : "2px")};
+    left: ${(props) => (props.active ? "22px" : "2px")};
     width: 20px;
     height: 20px;
     background: white;

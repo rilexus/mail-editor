@@ -8,6 +8,7 @@ import { mergeRefs } from "react-merge-refs";
 import { useApplicationState } from "../providers/StateProvider";
 import { dropItemCommand } from "../commands";
 import { useOver } from "../hooks/useOver";
+import { DragHandler } from "../ui/icons/DragHandler";
 
 const Controls = styled.div`
   background: rgba(165, 167, 246, 0.06);
@@ -24,7 +25,8 @@ const Hover = styled.div`
 
       & > ${Controls} {
         display: inline;
-      }`
+      }
+      `
       : `& > ${Controls} {
           display: none;
         }`;
@@ -47,16 +49,13 @@ export const CanvasComponent = ({
 
   const isSelected = selectedComponentPath === path;
 
-  const [{ isDragging }, drag, dragPreview] = useDrag(
+  const [_, drag, dragPreview] = useDrag(
     () => ({
       // "type" is required. It is used by the "accept" specification of drop targets.
       type: item.name,
       item: item,
       // The collect function utilizes a "monitor" instance (see the Overview for what this is)
       // to pull important pieces of state from the DnD system.
-      collect: (monitor) => ({
-        isDragging: monitor.isDragging(),
-      }),
     }),
     [item]
   );
@@ -73,27 +72,38 @@ export const CanvasComponent = ({
 
   return (
     <Hover
-      ref={mergeRefs([ref, drag])}
+      ref={mergeRefs([ref, dragPreview])}
       $active={isHover || isSelected}
       style={{
         position: "relative",
       }}
       onClick={(e) => {
-        e.stopPropagation();
+        // e.stopPropagation();
         onClick?.(path);
       }}
     >
-      <Controls>
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onDelete(item);
+      <Controls ref={drag}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            gap: "16px",
+            justifyContent: "end",
           }}
         >
-          Delete
-        </button>
+          {/*<DragHandler ref={drag} />*/}
+          <button
+            onClick={(e) => {
+              // e.stopPropagation();
+              onDelete(item);
+            }}
+          >
+            Delete
+          </button>
+        </div>
       </Controls>
-      <Component {...props} item={item} onDrop={onDrop} path={path}>
+
+      <Component {...props} item={item}>
         <DropArea
           data={{
             path: `${path}.children.0`,
@@ -103,26 +113,20 @@ export const CanvasComponent = ({
         />
         {children.map((child, i) => {
           return (
-            <Fragment key={`${child.name}.children.${i}`}>
-              <div
-                style={{
-                  paddingLeft: "1rem",
+            <div key={`${path}.children.${i}`} style={{ marginLeft: "20px" }}>
+              <CanvasComponent
+                onDelete={onDelete}
+                onClickOutside={onClickOutside}
+                onClick={onClick}
+                item={{
+                  ...child,
+                  path: `${path}.children.${i}`,
+                  parentPath: item.path,
                 }}
-              >
-                <CanvasComponent
-                  onDelete={onDelete}
-                  onClickOutside={onClickOutside}
-                  onClick={onClick}
-                  key={i}
-                  item={{
-                    ...child,
-                    path: `${path}.children.${i}`,
-                    parentPath: item.path,
-                  }}
-                  onDrop={onDrop}
-                  path={`${path}.children.${i}`}
-                />
-              </div>
+                onDrop={onDrop}
+                path={`${path}.children.${i}`}
+              />
+
               <DropArea
                 data={{
                   path: `${path}.children.${i + 1}`,
@@ -132,7 +136,7 @@ export const CanvasComponent = ({
                 }
                 accept={accept}
               />
-            </Fragment>
+            </div>
           );
         })}
       </Component>

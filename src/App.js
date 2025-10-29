@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Header from "./components/Header";
-import Sidebar from "./components/Sidebar";
+import { Sidebar } from "./components/Sidebar";
 import Canvas from "./components/Canvas";
 import PropertiesPanel from "./components/PropertiesPanel";
 import { AppContainer, MainContent, HelpButton } from "./components/styles";
@@ -10,8 +10,6 @@ import {
   useApplicationState,
   withApplicationState,
 } from "./providers/StateProvider";
-import { useEditorStore } from "./state";
-import { add } from "./state/commands";
 
 export default withApplicationState(function EmailEditor() {
   const selectedComponent = useApplicationState(
@@ -30,7 +28,7 @@ export default withApplicationState(function EmailEditor() {
       <Header />
       <MainContent>
         <DndProvider backend={HTML5Backend}>
-          <Sidebar onSelectElement={setSelectedElement} />
+          <Sidebar />
           <Canvas />
           {selectedComponent && (
             <PropertiesPanel

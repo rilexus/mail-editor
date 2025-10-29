@@ -1,9 +1,9 @@
 import React from "react";
 
-export const Headline = ({ children }) => {
+export const IssueDate = ({ children }) => {
   return (
     <div>
-      Headline
+      IssueDate
       {children}
     </div>
   );

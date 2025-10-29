@@ -157,7 +157,7 @@ export default function PropertiesPanel({
           <PaddingsHeader>
             <PropertyTitle>Paddings</PropertyTitle>
             <PaddingsToggle
-              active={paddingsEnabled}
+              $active={paddingsEnabled}
               onClick={() => setPaddingsEnabled(!paddingsEnabled)}
             >
               <div />

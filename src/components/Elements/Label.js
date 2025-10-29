@@ -1,9 +1,9 @@
 import React from "react";
 
-export const Headline = ({ children }) => {
+export const Label = ({ children }) => {
   return (
     <div>
-      Headline
+      Label
       {children}
     </div>
   );

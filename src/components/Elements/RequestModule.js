@@ -1,9 +1,9 @@
 import React from "react";
 
-export const Headline = ({ children }) => {
+export const RequestModule = ({ children }) => {
   return (
     <div>
-      Headline
+      RequestModule
       {children}
     </div>
   );

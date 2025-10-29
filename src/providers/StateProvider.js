@@ -1,95 +1,68 @@
 import React, { createContext, useContext, useState } from "react";
-import { get } from "../utils/get";
-import { log } from "../services/log";
+import defaultConfig from "../default.js";
+import { capitalize } from "../utils/capitalize";
+import { getAcceptArray } from "./getAcceptArray";
+import { getAttributes } from "./getAttributes";
 
-const initialLayout = {
-  name: "root",
-  type: "layout",
-  attributes: {},
-  props: {},
-  children: [
-    // {
-    //   name: 'header',
-    //   type: "Component",
-    //   children: [],
-    //   props: {},
-    //   attributes: {}
-    // },
-    // {
-    //   name: "main",
-    //   type: "Component",
-    //   attributes: {},
-    //   props: {},
-    //   children: [
-    //     {
-    //       type: "Component",
-    //       name: "toc",
-    //       attributes: {},
-    //       props: {},
-    //       children: [],
-    //     },
-    //     {
-    //       type: "Component",
-    //       name: "content",
-    //       attributes: {},
-    //       props: {},
-    //       children: [
-    //         {
-    //           type: "Component",
-    //           name: "inner",
-    //           attributes: {},
-    //           props: {},
-    //           children: [
-    //             {
-    //               name: "headline",
-    //               type: "Component",
-    //               props: {
-    //                 template: "recordField",
-    //                 value: "subject_area_name",
-    //               },
-    //               attributes: {},
-    //               children: [],
-    //             },
-    //           ],
-    //         },
-    //       ],
-    //     },
-    //   ],
-    // },
-    // {
-    //   name: "footer",
-    //   type: "Component",
-    //   props: {},
-    //   children: [],
-    //   attributes: {},
-    // },
-  ],
-  // header: {},
-  // main: {
-  //   elements: {
-  //     toc: {},
-  //     content: {
-  //       elements: {
-  //         inner: {
-  //           elements: {
-  //             headline: {
-  //               template: "recordField",
-  //               value: "subject_area_name",
-  //             },
-  //           },
-  //           articles: {},
-  //         },
-  //       },
-  //     },
-  //   },
-  // },
-  // footer: {},
+const mailer2TemplateToCanvasLayout = (template) => {
+  const run = (node) => {
+    const { elements, articleElements } = node;
+
+    return {
+      attributes: getAttributes(node),
+      children: !!elements
+        ? Object.entries(elements).reduce((acc, [key, value]) => {
+            return [
+              ...acc,
+              {
+                name: key,
+                id: "",
+                path: "",
+                label: capitalize(key),
+                accept: getAcceptArray({ name: key }),
+                ...run(value),
+              },
+            ];
+          }, [])
+        : !!articleElements
+        ? Object.entries(articleElements).reduce((acc, [key, value]) => {
+            return [
+              ...acc,
+              {
+                name: key,
+                id: "",
+                path: "",
+                label: capitalize(key),
+                accept: getAcceptArray({ name: key }),
+                ...run(value),
+              },
+            ];
+          }, [])
+        : [],
+    };
+  };
+
+  return run(template);
 };
+
+console.log(
+  mailer2TemplateToCanvasLayout(
+    defaultConfig.system.mailer2.templates.mediaReviewA
+  )
+);
 
 const initialState = {
   selectedComponent: null,
   selectedComponentPath: null,
-  layout: initialLayout,
+  layout: {
+    name: "root",
+    type: "layout",
+    attributes: {},
+    props: {},
+    ...mailer2TemplateToCanvasLayout(
+      defaultConfig.system.mailer2.templates.mediaReviewA
+    ),
+  },
 };
 
 const Context = createContext([initialState, {}]);
