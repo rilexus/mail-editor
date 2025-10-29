@@ -4,7 +4,7 @@ import { useDrop } from "react-dnd";
 export const Area = styled.div`
   min-height: 10px;
   min-width: 10px;
-  ${({ $canDrop }) => ($canDrop ? "border: 2px dashed gray" : "")};
+  ${({ $canDrop }) => ($canDrop ? "border: 1px dashed gray" : "")};
 `;
 
 export const DropArea = ({ data, accept, onDrop, onHover }) => {

@@ -32,7 +32,7 @@ export default function Canvas() {
     run(selectItemCommand(path));
   };
 
-  const handleDeselectComponent = (path) => {
+  const handleDeselectComponent = () => {
     run(deselectItemCommand());
   };
 
@@ -56,8 +56,7 @@ export default function Canvas() {
               <Fragment key={i}>
                 <CanvasComponent
                   onClickOutside={handleDeselectComponent}
-                  // onClick={handleSelectComponent}
-                  onClick={() => {}}
+                  onClick={handleSelectComponent}
                   onDelete={(item) => {
                     run(removeItemCommand(item));
                   }}

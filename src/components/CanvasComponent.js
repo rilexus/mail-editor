@@ -59,15 +59,10 @@ export const CanvasComponent = ({
     }),
     [item]
   );
-
   const ref = useRef(null);
-
   const isHover = useOver(ref);
-
   const Component = getComponent(item);
-
   useOnClickOutside(ref, () => onClickOutside(path));
-
   const { accept, children } = item;
 
   return (
@@ -78,7 +73,7 @@ export const CanvasComponent = ({
         position: "relative",
       }}
       onClick={(e) => {
-        // e.stopPropagation();
+        e.stopPropagation();
         onClick?.(path);
       }}
     >
@@ -91,7 +86,6 @@ export const CanvasComponent = ({
             justifyContent: "end",
           }}
         >
-          {/*<DragHandler ref={drag} />*/}
           <button
             onClick={(e) => {
               // e.stopPropagation();
@@ -102,7 +96,6 @@ export const CanvasComponent = ({
           </button>
         </div>
       </Controls>
-
       <Component {...props} item={item}>
         <DropArea
           data={{
