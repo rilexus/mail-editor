@@ -25,6 +25,7 @@ import {
 import { useApplicationState } from "../providers/StateProvider";
 import { Select } from "../ui/select";
 import { setItemAttributesCommand } from "../commands";
+import { Input } from "../ui/input/Input";
 
 export default function PropertiesPanel({
   paddingsEnabled,
@@ -44,9 +45,7 @@ export default function PropertiesPanel({
   const run = useApplicationState(({ run }) => run);
 
   const label = selectedComponent?.label || "";
-  const { type } = selectedComponent?.attributes || {};
-
-  console.log(selectedComponent);
+  const { type, class: cls } = selectedComponent?.attributes || {};
 
   const handleAttributeChange = (key, value) => {
     run(
@@ -72,6 +71,19 @@ export default function PropertiesPanel({
           </PropertyHeader>
         </PropertySection>
 
+        {typeof cls !== undefined && (
+          <PropertySection>
+            <PropertyHeader>
+              <PropertyTitle>Class</PropertyTitle>
+            </PropertyHeader>
+            <PropertyContent>
+              <Input
+                value={cls}
+                onChange={(e) => handleAttributeChange("class", e.target.value)}
+              />
+            </PropertyContent>
+          </PropertySection>
+        )}
         {type && (
           <PropertySection>
             <PropertyHeader>
