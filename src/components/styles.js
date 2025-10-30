@@ -352,12 +352,14 @@ export const CanvasContainer = styled.main`
 `;
 
 export const EmailPreview = styled.div`
+  overflow: scroll;
+  max-height: calc(100vh - 70px);
+
   width: 100%;
   max-width: 700px;
   background: white;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
 `;
 
 export const EmailContent = styled.div`

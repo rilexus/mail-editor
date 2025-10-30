@@ -14,4 +14,9 @@ export const Select = styled.select`
     outline: none;
     border-color: #6366f1;
   }
+
+  &:disabled {
+    cursor: not-allowed;
+    background: light-dark(rgba(239, 239, 239, 0.3), rgba(59, 59, 59, 0.3));
+  }
 `;

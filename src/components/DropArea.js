@@ -1,10 +1,16 @@
 import styled from "styled-components";
 import { useDrop } from "react-dnd";
-
 export const Area = styled.div`
   min-height: 10px;
   min-width: 10px;
-  ${({ $canDrop }) => ($canDrop ? "border: 1px dashed gray" : "")};
+  ${({ $canDrop }) =>
+    $canDrop
+      ? `
+    border: 1px solid #f9f9f9;
+    background: #6465f01f;
+    border-radius: 8px;
+    `
+      : ""};
 `;
 
 export const DropArea = ({ data, accept, onDrop, onHover }) => {

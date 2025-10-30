@@ -14,7 +14,7 @@ import {
 } from "./styles";
 import { CanvasComponent } from "./CanvasComponent";
 import { DropArea } from "./DropArea";
-import { Fragment } from "react";
+import { Fragment, useRef } from "react";
 import { useApplicationState } from "../providers/StateProvider";
 import {
   selectItemCommand,
@@ -22,8 +22,10 @@ import {
   removeItemCommand,
   deselectItemCommand,
 } from "../commands";
+import { useDndScrolling } from "react-dnd-scrolling";
 
 export default function Canvas() {
+  const ref = useRef(null);
   const { run, children } = useApplicationState(
     ({ layout: { children }, run }) => ({ children, run })
   );
@@ -36,9 +38,11 @@ export default function Canvas() {
     run(deselectItemCommand());
   };
 
+  useDndScrolling(ref);
+
   return (
     <CanvasContainer>
-      <EmailPreview>
+      <EmailPreview ref={ref}>
         <EmailContent onClick={handleDeselectComponent}>
           <DropArea
             data={{

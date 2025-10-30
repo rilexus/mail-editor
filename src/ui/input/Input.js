@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 export const Input = styled.input`
-  width: 60px;
   padding: 8px 12px;
   border: 1px solid #e5e7eb;
   border-radius: 6px;
@@ -12,5 +11,8 @@ export const Input = styled.input`
   &:focus {
     outline: none;
     border-color: #6366f1;
+  }
+  &:disabled {
+    cursor: not-allowed;
   }
 `;

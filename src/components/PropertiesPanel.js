@@ -42,10 +42,13 @@ export default function PropertiesPanel({
   const selectedComponent = useApplicationState(
     ({ selectedComponent }) => selectedComponent
   );
+
   const run = useApplicationState(({ run }) => run);
 
   const label = selectedComponent?.label || "";
-  const { type, class: cls } = selectedComponent?.attributes || {};
+  const { type, class: cls, template } = selectedComponent?.attributes || {};
+
+  console.log(selectedComponent, type, cls, template);
 
   const handleAttributeChange = (key, value) => {
     run(
@@ -71,37 +74,59 @@ export default function PropertiesPanel({
           </PropertyHeader>
         </PropertySection>
 
-        {typeof cls !== undefined && (
-          <PropertySection>
-            <PropertyHeader>
-              <PropertyTitle>Class</PropertyTitle>
-            </PropertyHeader>
-            <PropertyContent>
-              <Input
-                value={cls}
-                onChange={(e) => handleAttributeChange("class", e.target.value)}
-              />
-            </PropertyContent>
-          </PropertySection>
-        )}
-        {type && (
-          <PropertySection>
-            <PropertyHeader>
-              <PropertyTitle>Type</PropertyTitle>
-            </PropertyHeader>
-            <PropertyContent>
-              <Select
-                value={type}
-                onChange={(e) => handleAttributeChange("type", e.target.value)}
-              >
-                <option value={"horizontal"}>Horizontal</option>
-                <option value={"inline"}>Inline</option>
-                <option value={"text"}>Text</option>
-                <option value={"recordField"}>Record Field</option>
-              </Select>
-            </PropertyContent>
-          </PropertySection>
-        )}
+        <PropertySection>
+          <PropertyHeader>
+            <PropertyTitle>Class</PropertyTitle>
+          </PropertyHeader>
+          <PropertyContent>
+            <Input
+              disabled={typeof cls === "undefined"}
+              value={cls}
+              onChange={(e) => handleAttributeChange("class", e.target.value)}
+            />
+          </PropertyContent>
+        </PropertySection>
+
+        <PropertySection>
+          <PropertyHeader>
+            <PropertyTitle>Type</PropertyTitle>
+          </PropertyHeader>
+          <PropertyContent>
+            <Select
+              value={type}
+              disabled={typeof type === "undefined"}
+              onChange={(e) => handleAttributeChange("type", e.target.value)}
+            >
+              <option value={"horizontal"}>Horizontal</option>
+              <option value={"inline"}>Inline</option>
+              <option value={"text"}>Text</option>
+              <option value={"recordField"}>Record Field</option>
+            </Select>
+          </PropertyContent>
+        </PropertySection>
+
+        <PropertySection>
+          <PropertyHeader>
+            <PropertyTitle>Template</PropertyTitle>
+          </PropertyHeader>
+          <PropertyContent>
+            <Select
+              disabled={typeof template === "undefined"}
+              value={template}
+              onChange={(e) =>
+                handleAttributeChange("template", e.target.value)
+              }
+            >
+              <option value={"issueDate"}>Issue Date</option>
+              <option value={"Container"}>Container</option>
+              <option value={"link"}>Link</option>
+              <option value={"loop"}>Loop</option>
+              <option value={"text"}>Text</option>
+              <option value={"article/headline"}>Article/Headline</option>
+              <option value={"recordField"}>Record Field</option>
+            </Select>
+          </PropertyContent>
+        </PropertySection>
 
         {/*<PropertySection>*/}
         {/*  <PropertyHeader>*/}
