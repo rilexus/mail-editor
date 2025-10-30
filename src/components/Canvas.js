@@ -18,9 +18,9 @@ import { Fragment } from "react";
 import { useApplicationState } from "../providers/StateProvider";
 import {
   selectItemCommand,
-  deselectItemCommand,
   dropItemCommand,
   removeItemCommand,
+  deselectItemCommand,
 } from "../commands";
 
 export default function Canvas() {
@@ -28,18 +28,18 @@ export default function Canvas() {
     ({ layout: { children }, run }) => ({ children, run })
   );
 
-  const handleSelectComponent = (path) => {
-    run(selectItemCommand(path));
+  const handleSelectComponent = (item) => {
+    run(selectItemCommand(item));
   };
 
-  const handleDeselectComponent = () => {
+  const handleDeselectComponent = (e) => {
     run(deselectItemCommand());
   };
 
   return (
     <CanvasContainer>
       <EmailPreview>
-        <EmailContent>
+        <EmailContent onClick={handleDeselectComponent}>
           <DropArea
             data={{
               path: "children.0",
@@ -55,7 +55,9 @@ export default function Canvas() {
             return (
               <Fragment key={i}>
                 <CanvasComponent
-                  onClickOutside={handleDeselectComponent}
+                  // onClickOutside={(path) => {
+                  //   handleDeselectComponent(path)
+                  // }}
                   onClick={handleSelectComponent}
                   onDelete={(item) => {
                     run(removeItemCommand(item));

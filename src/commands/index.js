@@ -19,27 +19,39 @@ export const removeItemCommand = (item) => {
   );
 };
 
+export const setItemAttributesCommand = (item, attributes) => {
+  return new Command(
+    (state, setState) => {
+      item.attributes = { ...attributes };
+
+      setState((state) => {
+        return {
+          ...state,
+          layout: set(state.layout, item.path, item),
+        };
+      });
+    },
+    () => {}
+  );
+};
+
 export const deselectItemCommand = () => {
   return new Command((state, setState) => {
     setState((state) => {
       return {
         ...state,
         selectedComponent: null,
-        selectedComponentPath: null,
       };
     });
   });
 };
 
-export const selectItemCommand = (path) => {
+export const selectItemCommand = (item) => {
   return new Command(
     (state, setState) => {
-      const selectedComponent = get(state.layout, path);
-
       setState((s) => ({
         ...s,
-        selectedComponent,
-        selectedComponentPath: path,
+        selectedComponent: { ...item },
       }));
     },
     () => {}

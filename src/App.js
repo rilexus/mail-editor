@@ -10,6 +10,7 @@ import {
   useApplicationState,
   withApplicationState,
 } from "./providers/StateProvider";
+import { deselectItemCommand } from "./commands";
 
 export default withApplicationState(function EmailEditor() {
   const selectedComponent = useApplicationState(

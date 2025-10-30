@@ -43,7 +43,7 @@ export const CanvasComponent = ({
   ...props
 }) => {
   const selectedComponentPath = useApplicationState(
-    ({ selectedComponentPath }) => selectedComponentPath
+    ({ selectedComponent }) => selectedComponent?.path
   );
   const run = useApplicationState(({ run }) => run);
 
@@ -62,40 +62,41 @@ export const CanvasComponent = ({
   const ref = useRef(null);
   const isHover = useOver(ref);
   const Component = getComponent(item);
-  useOnClickOutside(ref, () => onClickOutside(path));
+  useOnClickOutside(ref, () => onClickOutside?.(path));
   const { accept, children } = item;
 
   return (
     <Hover
-      ref={mergeRefs([ref, dragPreview])}
+      ref={mergeRefs([ref, dragPreview, drag])}
       $active={isHover || isSelected}
       style={{
+        paddingLeft: isHover ? 10 : 0,
         position: "relative",
       }}
       onClick={(e) => {
         e.stopPropagation();
-        onClick?.(path);
+        onClick?.(item);
       }}
     >
-      <Controls ref={drag}>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            gap: "16px",
-            justifyContent: "end",
-          }}
-        >
-          <button
-            onClick={(e) => {
-              // e.stopPropagation();
-              onDelete(item);
-            }}
-          >
-            Delete
-          </button>
-        </div>
-      </Controls>
+      {/*<Controls>*/}
+      {/*  <div*/}
+      {/*    style={{*/}
+      {/*      display: "flex",*/}
+      {/*      flexDirection: "row",*/}
+      {/*      gap: "16px",*/}
+      {/*      justifyContent: "end",*/}
+      {/*    }}*/}
+      {/*  >*/}
+      {/*    <button*/}
+      {/*      onClick={(e) => {*/}
+      {/*        // e.stopPropagation();*/}
+      {/*        onDelete(item);*/}
+      {/*      }}*/}
+      {/*    >*/}
+      {/*      Delete*/}
+      {/*    </button>*/}
+      {/*  </div>*/}
+      {/*</Controls>*/}
       <Component {...props} item={item}>
         <DropArea
           data={{
@@ -106,7 +107,7 @@ export const CanvasComponent = ({
         />
         {children.map((child, i) => {
           return (
-            <div key={`${path}.children.${i}`} style={{ marginLeft: "20px" }}>
+            <div key={`${path}.children.${i}`} style={{ paddingLeft: 15 }}>
               <CanvasComponent
                 onDelete={onDelete}
                 onClickOutside={onClickOutside}

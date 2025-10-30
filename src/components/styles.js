@@ -4,7 +4,6 @@ import styled from "styled-components";
 export const AppContainer = styled.div`
   width: 100%;
   min-height: 100vh;
-  background: #e5e7eb;
   display: flex;
   flex-direction: column;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
@@ -16,6 +15,7 @@ export const MainContent = styled.div`
   flex: 1;
   gap: 0;
   overflow: hidden;
+  background: #e5e7eb;
 `;
 
 export const HelpButton = styled.button`

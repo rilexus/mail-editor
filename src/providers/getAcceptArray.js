@@ -14,6 +14,8 @@ export const getAcceptArray = ({ name }) => {
         "content",
         "googleTranslate",
       ];
+    case "toc":
+      return ["inner"];
     case "html":
       return ["icon", "label"];
     case "pdf":

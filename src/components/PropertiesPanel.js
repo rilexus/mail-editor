@@ -23,6 +23,8 @@ import {
   VisibilityIcon,
 } from "./styles";
 import { useApplicationState } from "../providers/StateProvider";
+import { Select } from "../ui/select";
+import { setItemAttributesCommand } from "../commands";
 
 export default function PropertiesPanel({
   paddingsEnabled,
@@ -39,43 +41,81 @@ export default function PropertiesPanel({
   const selectedComponent = useApplicationState(
     ({ selectedComponent }) => selectedComponent
   );
-  const label = selectedComponent?.label;
+  const run = useApplicationState(({ run }) => run);
+
+  const label = selectedComponent?.label || "";
+  const { type } = selectedComponent?.attributes || {};
+
+  console.log(selectedComponent);
+
+  const handleAttributeChange = (key, value) => {
+    run(
+      setItemAttributesCommand(selectedComponent, {
+        ...selectedComponent.attributes,
+        [key]: value,
+      })
+    );
+  };
 
   return (
     selectedComponent && (
       <PropertiesPanelContainer>
         <PropertySection>
           <PropertyHeader>
-            <PropertyTitle>{label}</PropertyTitle>
-            <PropertyCount>21</PropertyCount>
+            <PropertyTitle
+              style={{
+                fontSize: "1.3rem",
+              }}
+            >
+              {label}
+            </PropertyTitle>
           </PropertyHeader>
         </PropertySection>
 
-        <PropertySection>
-          <PropertyHeader>
-            <PropertyTitle>Picture</PropertyTitle>
-            <DeleteIcon>
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path
-                  d="M2 4h12M6 4V2h4v2M3 4v10h10V4"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </DeleteIcon>
-          </PropertyHeader>
-          <PropertyContent>
-            <ImagePreview>
-              <img
-                src="/person-with-backpack-illustration.jpg"
-                alt="Preview"
-                style={{ width: "100%", height: "100%", objectFit: "contain" }}
-              />
-            </ImagePreview>
-            <ImageName>uber_banner.png</ImageName>
-          </PropertyContent>
-        </PropertySection>
+        {type && (
+          <PropertySection>
+            <PropertyHeader>
+              <PropertyTitle>Type</PropertyTitle>
+            </PropertyHeader>
+            <PropertyContent>
+              <Select
+                value={type}
+                onChange={(e) => handleAttributeChange("type", e.target.value)}
+              >
+                <option value={"horizontal"}>Horizontal</option>
+                <option value={"inline"}>Inline</option>
+                <option value={"text"}>Text</option>
+                <option value={"recordField"}>Record Field</option>
+              </Select>
+            </PropertyContent>
+          </PropertySection>
+        )}
+
+        {/*<PropertySection>*/}
+        {/*  <PropertyHeader>*/}
+        {/*    <PropertyTitle>Picture</PropertyTitle>*/}
+        {/*    <DeleteIcon>*/}
+        {/*      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">*/}
+        {/*        <path*/}
+        {/*          d="M2 4h12M6 4V2h4v2M3 4v10h10V4"*/}
+        {/*          stroke="currentColor"*/}
+        {/*          strokeWidth="1.5"*/}
+        {/*          strokeLinecap="round"*/}
+        {/*        />*/}
+        {/*      </svg>*/}
+        {/*    </DeleteIcon>*/}
+        {/*  </PropertyHeader>*/}
+        {/*  <PropertyContent>*/}
+        {/*    <ImagePreview>*/}
+        {/*      <img*/}
+        {/*        src="/person-with-backpack-illustration.jpg"*/}
+        {/*        alt="Preview"*/}
+        {/*        style={{ width: "100%", height: "100%", objectFit: "contain" }}*/}
+        {/*      />*/}
+        {/*    </ImagePreview>*/}
+        {/*    <ImageName>uber_banner.png</ImageName>*/}
+        {/*  </PropertyContent>*/}
+        {/*</PropertySection>*/}
 
         <PropertySection>
           <PropertyHeader>
@@ -105,7 +145,7 @@ export default function PropertiesPanel({
                 onChange={(e) => setOpacity(e.target.value)}
               />
               <span>%</span>
-              <BlendModeSelect
+              <Select
                 value={blendMode}
                 onChange={(e) => setBlendMode(e.target.value)}
               >
@@ -113,7 +153,7 @@ export default function PropertiesPanel({
                 <option>Multiply</option>
                 <option>Screen</option>
                 <option>Overlay</option>
-              </BlendModeSelect>
+              </Select>
             </LayerControls>
           </PropertyContent>
         </PropertySection>

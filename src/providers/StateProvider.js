@@ -45,24 +45,29 @@ const mailer2TemplateToCanvasLayout = (template) => {
   return run(template);
 };
 
-console.log(
-  mailer2TemplateToCanvasLayout(
-    defaultConfig.system.mailer2.templates.mediaReviewA
-  )
-);
+const canvasLayoutToMailer2Template = (layout) => {
+  const run = (node) => {
+    const { children, attributes } = node;
+
+    return {
+      ...attributes,
+      elements: children.reduce((acc, child) => {
+        return {
+          ...acc,
+          [child.name]: run(child),
+        };
+      }, {}),
+    };
+  };
+  return run(layout);
+};
 
 const initialState = {
   selectedComponent: null,
   selectedComponentPath: null,
-  layout: {
-    name: "root",
-    type: "layout",
-    attributes: {},
-    props: {},
-    ...mailer2TemplateToCanvasLayout(
-      defaultConfig.system.mailer2.templates.mediaReviewA
-    ),
-  },
+  layout: mailer2TemplateToCanvasLayout(
+    defaultConfig.system.mailer2.templates.mediaReviewA
+  ),
 };
 
 const Context = createContext([initialState, {}]);

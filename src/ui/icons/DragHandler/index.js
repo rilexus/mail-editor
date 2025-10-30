@@ -15,7 +15,7 @@ export const Styled = styled.div`
 export const DragHandler = forwardRef((props, ref) => {
   return (
     <Styled ref={ref} {...props}>
-      <svg width="3rem" height="3rem" viewBox="0 0 16 16" fill="none">
+      <svg width="2rem" height="2rem" viewBox="0 0 16 16" fill="none">
         <circle cx="6" cy="4" r="1" fill="currentColor" />
         <circle cx="10" cy="4" r="1" fill="currentColor" />
         <circle cx="6" cy="8" r="1" fill="currentColor" />
