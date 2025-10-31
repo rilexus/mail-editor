@@ -8,10 +8,31 @@ import { get } from "../utils/get";
 export const removeItemCommand = (item) => {
   return new Command(
     (state, setState) => {
+      const isSelected = state.selectedComponent?.path === item.path;
+
       setState((state) => {
         return {
           ...state,
           layout: remove(state.layout, item.path),
+          ...(isSelected
+            ? {
+                selectedComponent: null,
+              }
+            : {}),
+        };
+      });
+    },
+    () => {}
+  );
+};
+
+export const selectTemplateCommand = ({ name }) => {
+  return new Command(
+    (state, setState) => {
+      setState((state) => {
+        return {
+          ...state,
+          selectedTemplate: name,
         };
       });
     },

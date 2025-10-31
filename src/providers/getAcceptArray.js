@@ -1,24 +1,50 @@
+import { ElementTypes } from "../components/Elements/ElementTypes";
+
 export const getAcceptArray = ({ name }) => {
   switch (name) {
     case "header":
       return ["inner"];
-    case "main":
+    case ElementTypes.main:
       return ["content", "toc"];
     case "footer":
       return ["copyright", "license", "vendor"];
-    case "content":
+    case ElementTypes.stockRatesTop:
+      return [ElementTypes.inner];
+    case "intro":
+      return [];
+    case "table":
+      return ["main", "header"];
+    case "disclaimer":
+      return [];
+    case ElementTypes.content:
       return [
-        "inner",
-        "tocLink",
-        "headlineWithMeta",
-        "content",
-        "googleTranslate",
+        ElementTypes.inner,
+        ElementTypes.tocLink,
+        ElementTypes.headlineWithMeta,
+        ElementTypes.content,
+        ElementTypes.googleTranslate,
+        ElementTypes.intro,
+        ElementTypes.disclaimer,
       ];
+    case ElementTypes.reportImage:
+      return [];
+    case ElementTypes.left:
+      return [ElementTypes.reportImage];
+    case ElementTypes.right:
+      return [
+        ElementTypes.abstract,
+        ElementTypes.content,
+        ElementTypes.googleTranslate,
+      ];
+    case ElementTypes.publishedAt:
+      return [];
+    case "media":
+      return [];
     case "toc":
-      return ["inner"];
-    case "html":
+      return [ElementTypes.inner];
+    case ElementTypes.html:
       return ["icon", "label"];
-    case "pdf":
+    case ElementTypes.pdf:
       return ["icon", "label"];
     case "requestModule":
       return ["icon", "label"];
@@ -26,7 +52,7 @@ export const getAcceptArray = ({ name }) => {
       return ["pdf", "html", "requestModule"];
     case "articles":
       return ["inner"];
-    case "inner":
+    case ElementTypes.inner:
       return [
         "icon",
         "content",

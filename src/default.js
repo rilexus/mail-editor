@@ -848,7 +848,7 @@ export default {
               items: [],
             },
             template: {
-              base: "mediaReviewA",
+              base: "mediaReviewC",
               override: {},
             },
             tracking: {
@@ -2010,147 +2010,147 @@ export default {
           type: "inline",
           wrapInSpan: false,
           elements: {
-            // header: {
-            //   template: "container",
-            //   elements: {
-            //     inner: {
-            //       template: "container",
-            //       elements: {
-            //         headline: {
-            //           template: "container",
-            //           class: "headline",
-            //           elements: {
-            //             inner: {
-            //               template: "text",
-            //               messageKey: "headline",
-            //             },
-            //           },
-            //         },
-            //         links: {
-            //           template: "container",
-            //           class: "links",
-            //           elements: {
-            //             inner: {
-            //               template: "container",
-            //               type: "horizontal",
-            //               class: "linksInner",
-            //               elements: {
-            //                 requestModule: {
-            //                   template: "container",
-            //                   class: "linkItem",
-            //                   elements: {
-            //                     inner: {
-            //                       template: "container",
-            //                       type: "horizontal",
-            //                       elements: {
-            //                         icon: {
-            //                           template: "image",
-            //                           type: "inline",
-            //                           src: "icon/requestModule.png",
-            //                           title: "Portal",
-            //                           alt: "Portal",
-            //                           height: 16,
-            //                           width: 16,
-            //                         },
-            //                         link: {
-            //                           template: "link",
-            //                           type: "inline",
-            //                           link: "requestModule",
-            //                           target: "_blank",
-            //                         },
-            //                       },
-            //                     },
-            //                   },
-            //                 },
-            //                 portal: {
-            //                   template: "container",
-            //                   class: "linkItem",
-            //                   elements: {
-            //                     inner: {
-            //                       template: "container",
-            //                       type: "horizontal",
-            //                       elements: {
-            //                         icon: {
-            //                           template: "image",
-            //                           type: "inline",
-            //                           src: "icon/portal.png",
-            //                           title: "Dashboard",
-            //                           alt: "Dashboard",
-            //                           height: 16,
-            //                           width: 16,
-            //                         },
-            //                         link: {
-            //                           template: "link",
-            //                           type: "inline",
-            //                           link: "portal",
-            //                           target: "_blank",
-            //                         },
-            //                       },
-            //                     },
-            //                   },
-            //                 },
-            //                 pdf: {
-            //                   template: "container",
-            //                   class: "linkItem",
-            //                   elements: {
-            //                     inner: {
-            //                       template: "container",
-            //                       type: "horizontal",
-            //                       elements: {
-            //                         icon: {
-            //                           template: "image",
-            //                           type: "inline",
-            //                           src: "icon/pdf.png",
-            //                           title: "PDF",
-            //                           alt: "PDF",
-            //                           height: 16,
-            //                           width: 16,
-            //                         },
-            //                         link: {
-            //                           template: "link",
-            //                           type: "inline",
-            //                           link: "pdf",
-            //                           target: "_blank",
-            //                         },
-            //                       },
-            //                     },
-            //                   },
-            //                 },
-            //                 html: {
-            //                   template: "container",
-            //                   class: "linkItem",
-            //                   elements: {
-            //                     inner: {
-            //                       template: "container",
-            //                       type: "horizontal",
-            //                       elements: {
-            //                         icon: {
-            //                           template: "image",
-            //                           type: "inline",
-            //                           src: "icon/html.png",
-            //                           title: "HTML",
-            //                           alt: "HTML",
-            //                           height: 16,
-            //                           width: 16,
-            //                         },
-            //                         link: {
-            //                           template: "link",
-            //                           type: "inline",
-            //                           link: "html",
-            //                           target: "_blank",
-            //                         },
-            //                       },
-            //                     },
-            //                   },
-            //                 },
-            //               },
-            //             },
-            //           },
-            //         },
-            //       },
-            //     },
-            //   },
-            // },
+            header: {
+              template: "container",
+              elements: {
+                inner: {
+                  template: "container",
+                  elements: {
+                    headline: {
+                      template: "container",
+                      class: "headline",
+                      elements: {
+                        inner: {
+                          template: "text",
+                          messageKey: "headline",
+                        },
+                      },
+                    },
+                    links: {
+                      template: "container",
+                      class: "links",
+                      elements: {
+                        inner: {
+                          template: "container",
+                          type: "horizontal",
+                          class: "linksInner",
+                          elements: {
+                            requestModule: {
+                              template: "container",
+                              class: "linkItem",
+                              elements: {
+                                inner: {
+                                  template: "container",
+                                  type: "horizontal",
+                                  elements: {
+                                    icon: {
+                                      template: "image",
+                                      type: "inline",
+                                      src: "icon/requestModule.png",
+                                      title: "Portal",
+                                      alt: "Portal",
+                                      height: 16,
+                                      width: 16,
+                                    },
+                                    link: {
+                                      template: "link",
+                                      type: "inline",
+                                      link: "requestModule",
+                                      target: "_blank",
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                            portal: {
+                              template: "container",
+                              class: "linkItem",
+                              elements: {
+                                inner: {
+                                  template: "container",
+                                  type: "horizontal",
+                                  elements: {
+                                    icon: {
+                                      template: "image",
+                                      type: "inline",
+                                      src: "icon/portal.png",
+                                      title: "Dashboard",
+                                      alt: "Dashboard",
+                                      height: 16,
+                                      width: 16,
+                                    },
+                                    link: {
+                                      template: "link",
+                                      type: "inline",
+                                      link: "portal",
+                                      target: "_blank",
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                            pdf: {
+                              template: "container",
+                              class: "linkItem",
+                              elements: {
+                                inner: {
+                                  template: "container",
+                                  type: "horizontal",
+                                  elements: {
+                                    icon: {
+                                      template: "image",
+                                      type: "inline",
+                                      src: "icon/pdf.png",
+                                      title: "PDF",
+                                      alt: "PDF",
+                                      height: 16,
+                                      width: 16,
+                                    },
+                                    link: {
+                                      template: "link",
+                                      type: "inline",
+                                      link: "pdf",
+                                      target: "_blank",
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                            html: {
+                              template: "container",
+                              class: "linkItem",
+                              elements: {
+                                inner: {
+                                  template: "container",
+                                  type: "horizontal",
+                                  elements: {
+                                    icon: {
+                                      template: "image",
+                                      type: "inline",
+                                      src: "icon/html.png",
+                                      title: "HTML",
+                                      alt: "HTML",
+                                      height: 16,
+                                      width: 16,
+                                    },
+                                    link: {
+                                      template: "link",
+                                      type: "inline",
+                                      link: "html",
+                                      target: "_blank",
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
             main: {
               template: "container",
               elements: {
@@ -4767,31 +4767,31 @@ export default {
                 },
               },
             },
-            // footer: {
-            //   template: "container",
-            //   elements: {
-            //     inner: {
-            //       template: "container",
-            //       elements: {
-            //         copyright: {
-            //           template: "text",
-            //           messageKey: "copyright",
-            //           class: "copyright",
-            //         },
-            //         license: {
-            //           template: "text",
-            //           messageKey: "licensenotice",
-            //           class: "licensenotice",
-            //         },
-            //         vendor: {
-            //           template: "text",
-            //           messageKey: "vendoradvice",
-            //           class: "vendoradvice",
-            //         },
-            //       },
-            //     },
-            //   },
-            // },
+            footer: {
+              template: "container",
+              elements: {
+                inner: {
+                  template: "container",
+                  elements: {
+                    copyright: {
+                      template: "text",
+                      messageKey: "copyright",
+                      class: "copyright",
+                    },
+                    license: {
+                      template: "text",
+                      messageKey: "licensenotice",
+                      class: "licensenotice",
+                    },
+                    vendor: {
+                      template: "text",
+                      messageKey: "vendoradvice",
+                      class: "vendoradvice",
+                    },
+                  },
+                },
+              },
+            },
           },
         },
         mediaReviewD: {

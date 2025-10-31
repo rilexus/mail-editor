@@ -25,6 +25,45 @@ import { RequestModule } from "./Elements/RequestModule";
 import { Pdf } from "./Elements/PDF";
 import { Html } from "./Elements/HTML";
 import { Label } from "./Elements/Label";
+import { StockRatesTop } from "./Elements/StockRatesTop";
+import { Intro } from "./Elements/Intro";
+import { Table } from "./Elements/Table";
+import { Media } from "./Elements/Media";
+import { PublishedAt } from "./Elements/PublishedAt";
+import { Disclaimer } from "./Elements/Disclaimer";
+import { ReportImage } from "./Elements/ReportImage";
+import { Abstract } from "./Elements/Abstract";
+import { Link } from "./Elements/Link";
+import { Portal } from "./Elements/Portal";
+import { Name } from "./Elements/Name";
+import { PriceClose } from "./Elements/PriceClose";
+import { ChangeRelative } from "./Elements/ChangeRelative";
+import { Item } from "./Elements/Item";
+import { Left } from "./Elements/Left";
+import { Right } from "./Elements/Right";
+import { StockRatesBottom } from "./Elements/StockRatesBottom";
+import { Percent } from "./Elements/Percent";
+import { CurrencySymbol } from "./Elements/CurrencySymbol";
+import { SocialMedia } from "./Elements/SocialMedia";
+import { Channels } from "./Elements/Channels";
+import { LinkedIn } from "./Elements/LinkedIn";
+import { Posts } from "./Elements/Posts";
+import { Post } from "./Elements/Post";
+import { User } from "./Elements/User";
+import { Image } from "./Elements/Image";
+import { Action } from "./Elements/Action";
+import { UserWithMeta } from "./Elements/UserWithMeta";
+import { Like } from "./Elements/Like";
+import { UserLink } from "./Elements/UserLink";
+import { UserName } from "./Elements/UserName";
+import { Date } from "./Elements/Date";
+import { ToPost } from "./Elements/ToPost";
+import { Twitter } from "./Elements/Twitter";
+import { Instagram } from "./Elements/Instagram";
+import { Avatar } from "./Elements/Avatar";
+import { Facebook } from "./Elements/Facebook";
+import { YouTube } from "./Elements/YouTube";
+import { TikTok } from "./Elements/TikTok";
 
 export const getComponent = ({ name }) => {
   switch (name) {
@@ -78,9 +117,97 @@ export const getComponent = ({ name }) => {
       return Html;
     case ElementTypes.label:
       return Label;
+    case ElementTypes.stockRatesTop:
+      return StockRatesTop;
+    case ElementTypes.intro:
+      return Intro;
+    case ElementTypes.table:
+      return Table;
+    case ElementTypes.media:
+      return Media;
+    case ElementTypes.publishedAt:
+      return PublishedAt;
+    case ElementTypes.disclaimer:
+      return Disclaimer;
+    case ElementTypes.reportImage:
+      return ReportImage;
+    case ElementTypes.abstract:
+      return Abstract;
+    case ElementTypes.link:
+      return Link;
+    case ElementTypes.portal:
+      return Portal;
+    case ElementTypes.name:
+      return Name;
+    case ElementTypes.priceClose:
+      return PriceClose;
+    case ElementTypes.changeRelative:
+      return ChangeRelative;
+    case ElementTypes.left:
+      return Left;
+    case ElementTypes.right:
+      return Right;
+    case ElementTypes.item:
+      return Item;
+    case ElementTypes.stockRatesBottom:
+      return StockRatesBottom;
+    case ElementTypes.percent:
+      return Percent;
+    case ElementTypes.currencySymbol:
+      return CurrencySymbol;
+    case ElementTypes.socialMedia:
+      return SocialMedia;
+    case ElementTypes.channels:
+      return Channels;
+    case ElementTypes.linkedIn:
+      return LinkedIn;
+    case ElementTypes.posts:
+      return Posts;
+    case ElementTypes.post:
+      return Post;
+    case ElementTypes.user:
+      return User;
+    case ElementTypes.image:
+      return Image;
+    case ElementTypes.action:
+      return Action;
+    case ElementTypes.userWithMeta:
+      return UserWithMeta;
+    case ElementTypes.like:
+      return Like;
+    case ElementTypes.userLink:
+      return UserLink;
+    case ElementTypes.userName:
+      return UserName;
+    case ElementTypes.date:
+      return Date;
+    case ElementTypes.toPost:
+      return ToPost;
+    case ElementTypes.twitter:
+      return Twitter;
+    case ElementTypes.instagram:
+      return Instagram;
+    case ElementTypes.avatar:
+      return Avatar;
+    case ElementTypes.facebook:
+      return Facebook;
+    case ElementTypes.youtube:
+      return YouTube;
+    case ElementTypes.tikTok:
+      return TikTok;
     default: {
       log.warn(`No "${name}" component found!`);
-      return () => null;
+      return (props) => {
+        return (
+          <div
+            style={{
+              background: "yellow",
+            }}
+          >
+            {props.item.name}
+          </div>
+        );
+      };
     }
   }
 };

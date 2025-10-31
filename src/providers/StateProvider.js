@@ -65,9 +65,8 @@ const canvasLayoutToMailer2Template = (layout) => {
 const initialState = {
   selectedComponent: null,
   selectedComponentPath: null,
-  layout: mailer2TemplateToCanvasLayout(
-    defaultConfig.system.mailer2.templates.mediaReviewA
-  ),
+  selectTemplate: "mediaReviewB",
+  layout: {},
 };
 
 const Context = createContext([initialState, {}]);
@@ -78,7 +77,16 @@ export const useApplicationState = (selector) => {
 };
 
 export const StateProvider = ({ children }) => {
-  const [state, setState] = useState(initialState);
+  const [state, setState] = useState(() => {
+    const baseTemplateName =
+      defaultConfig.system.mailer2.messages.alertmediareview.default.template
+        .base;
+
+    initialState.layout = mailer2TemplateToCanvasLayout(
+      defaultConfig.system.mailer2.templates[baseTemplateName]
+    );
+    return initialState;
+  });
 
   const run = (command) => {
     command.execute(state, setState);

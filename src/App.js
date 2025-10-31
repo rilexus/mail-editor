@@ -10,12 +10,14 @@ import {
   useApplicationState,
   withApplicationState,
 } from "./providers/StateProvider";
-import { deselectItemCommand } from "./commands";
+import { selectTemplateCommand } from "./commands";
 
 export default withApplicationState(function EmailEditor() {
   const selectedComponent = useApplicationState(
     ({ selectedComponent }) => selectedComponent
   );
+
+  const run = useApplicationState(({ run }) => run);
 
   const [selectedElement, setSelectedElement] = useState("picture");
   const [paddingsEnabled, setPaddingsEnabled] = useState(true);
@@ -26,7 +28,34 @@ export default withApplicationState(function EmailEditor() {
 
   return (
     <AppContainer>
-      <Header />
+      <Header
+        templates={[
+          {
+            name: "mediaReviewA",
+            id: "mediaReviewA",
+          },
+          {
+            name: "mediaReviewB",
+            id: "mediaReviewB",
+          },
+          {
+            name: "mediaReviewC",
+            id: "mediaReviewC",
+          },
+          {
+            name: "mediaReviewD",
+            id: "mediaReviewD",
+          },
+          {
+            name: "mediaReviewE",
+            id: "mediaReviewE",
+          },
+        ]}
+        currentTemplateId={"mediaReviewA"}
+        onTemplateChange={({ name }) => {
+          selectTemplateCommand({ name });
+        }}
+      />
       <MainContent>
         <DndProvider backend={HTML5Backend}>
           <Sidebar />
