@@ -1,5 +1,3 @@
-import { Facebook } from "./Facebook";
-
 export const ElementTypes = {
   table: "table",
   intro: "intro",
@@ -65,4 +63,9 @@ export const ElementTypes = {
   facebook: "facebook",
   youtube: "youtube",
   tikTok: "tiktok",
+  likes: "likes",
+  count: "count",
+  comments: "comments",
+  thumbnail: "thumbnail",
+  share: "share",
 };

@@ -64,6 +64,11 @@ import { Avatar } from "./Elements/Avatar";
 import { Facebook } from "./Elements/Facebook";
 import { YouTube } from "./Elements/YouTube";
 import { TikTok } from "./Elements/TikTok";
+import { Likes } from "./Elements/Likes";
+import { Count } from "./Elements/Count";
+import { Comments } from "./Elements/Comments";
+import { Thumbnail } from "./Elements/Thumbnail";
+import { Share } from "./Elements/Share";
 
 export const getComponent = ({ name }) => {
   switch (name) {
@@ -195,6 +200,16 @@ export const getComponent = ({ name }) => {
       return YouTube;
     case ElementTypes.tikTok:
       return TikTok;
+    case ElementTypes.likes:
+      return Likes;
+    case ElementTypes.count:
+      return Count;
+    case ElementTypes.comments:
+      return Comments;
+    case ElementTypes.thumbnail:
+      return Thumbnail;
+    case ElementTypes.share:
+      return Share;
     default: {
       log.warn(`No "${name}" component found!`);
       return (props) => {

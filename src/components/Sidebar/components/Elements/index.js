@@ -60,7 +60,12 @@ export const Elements = () => {
     ({ selectedComponent }) => selectedComponent
   );
   return (
-    <div>
+    <div
+      style={{
+        maxHeight: "calc(100vh - 120px)",
+        overflow: "scroll",
+      }}
+    >
       <ContentList>
         {defaultComponents.map((item) => {
           const canDrag = !!selectedComponent
