@@ -40,6 +40,21 @@ export const selectTemplateCommand = ({ name }) => {
   );
 };
 
+export const setItemStyleCommend = (item, style) => {
+  return new Command(
+    (state, setState) => {
+      item.props.style = style;
+      setState((state) => {
+        return {
+          ...state,
+          layout: set(state.layout, item.path, item),
+        };
+      });
+    },
+    () => {}
+  );
+};
+
 export const setItemAttributesCommand = (item, attributes) => {
   return new Command(
     (state, setState) => {
@@ -79,10 +94,13 @@ export const selectItemCommand = (item) => {
   );
 };
 
-export const dropItemCommand = (dropArea, item) => {
+export const dropItemCommand = (dropArea, { path }) => {
   return new Command(
     (state, setState) => {
-      const droppedItemPath = item.path.split(".");
+      const droppedItemPath = path.split(".");
+
+      const item = get(state.layout, path);
+
       const droppedItemIndex = Number(
         droppedItemPath[droppedItemPath.length - 1]
       );

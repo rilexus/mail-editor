@@ -14,7 +14,7 @@ import {
 } from "./styles";
 import { CanvasComponent } from "./CanvasComponent";
 import { DropArea } from "./DropArea";
-import { Fragment, useRef } from "react";
+import { Fragment, useCallback, useRef } from "react";
 import { useApplicationState } from "../providers/StateProvider";
 import {
   selectItemCommand,
@@ -30,13 +30,22 @@ export default function Canvas() {
     ({ layout: { children }, run }) => ({ children, run })
   );
 
-  const handleSelectComponent = (item) => {
+  const handleSelectComponent = useCallback((item) => {
     run(selectItemCommand(item));
-  };
+  }, []);
 
-  const handleDeselectComponent = (e) => {
+  const handleDeselectComponent = useCallback(() => {
     run(deselectItemCommand());
-  };
+  }, []);
+
+  const handleDelete = useCallback((item) => {
+    run(removeItemCommand(item));
+  }, []);
+
+  const handleDrop = useCallback(
+    (dropArea, item) => run(dropItemCommand(dropArea, item)),
+    []
+  );
 
   useDndScrolling(ref);
 
@@ -59,19 +68,11 @@ export default function Canvas() {
             return (
               <Fragment key={i}>
                 <CanvasComponent
-                  // onClickOutside={(path) => {
-                  //   handleDeselectComponent(path)
-                  // }}
                   onClick={handleSelectComponent}
-                  onDelete={(item) => {
-                    run(removeItemCommand(item));
-                  }}
+                  onDelete={handleDelete}
                   path={path}
-                  onDrop={(dropArea, item) =>
-                    run(dropItemCommand(dropArea, item))
-                  }
+                  onDrop={handleDrop}
                   item={item}
-                  {...child.props}
                 />
                 <DropArea
                   data={{

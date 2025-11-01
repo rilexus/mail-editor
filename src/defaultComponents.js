@@ -11,6 +11,9 @@ const buildDefaultElement = ({ name, ...rest }) => {
     accept: getAcceptArray({ name: name }),
     path: "",
     attributes: {},
+    props: {
+      style: {},
+    },
     children: [],
     ...rest,
   };

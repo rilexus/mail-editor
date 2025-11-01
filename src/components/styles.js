@@ -710,3 +710,37 @@ export const VisibilityIcon = styled.button`
     color: #1f2937;
   }
 `;
+
+// CSS Property Input Styles
+export const CSSPropertyLabel = styled.label`
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #6b7280;
+  margin-bottom: 6px;
+`;
+
+export const CSSPropertyInput = styled.input`
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #1f2937;
+  background: white;
+  transition: border-color 0.2s;
+
+  &:focus {
+    outline: none;
+    border-color: #6366f1;
+  }
+
+  &[type="color"] {
+    height: 40px;
+    cursor: pointer;
+  }
+
+  &::placeholder {
+    color: #9ca3af;
+  }
+`;

@@ -1,8 +1,8 @@
 import React from "react";
 
-export const Links = ({ children }) => {
+export const Links = ({ children, style }) => {
   return (
-    <div>
+    <div style={style}>
       Links
       {children}
     </div>

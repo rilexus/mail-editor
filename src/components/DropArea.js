@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useDrop } from "react-dnd";
-export const Area = styled.div`
+
+const Area = styled.div`
   min-height: 10px;
   min-width: 10px;
   ${({ $canDrop }) =>
@@ -17,11 +18,11 @@ export const DropArea = ({ data, accept, onDrop, onHover }) => {
   const [{ canDrop }, drop] = useDrop(
     () => ({
       accept,
-      drop: (item, monitor) => {
-        onDrop?.(data, item, monitor);
+      drop: (item) => {
+        onDrop?.(data, item);
       },
-      hover: (item, monitor) => {
-        onHover?.(item, monitor);
+      hover: (item) => {
+        onHover?.(item);
       },
       collect: (monitor) => {
         return {
@@ -29,7 +30,7 @@ export const DropArea = ({ data, accept, onDrop, onHover }) => {
         };
       },
     }),
-    [data]
+    [data.path]
   );
   return <Area $canDrop={canDrop} ref={drop} />;
 };

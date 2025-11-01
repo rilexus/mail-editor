@@ -1,7 +1,15 @@
 import { getComponent } from "./getElement";
 import styled from "styled-components";
 import { useOnClickOutside } from "usehooks-ts";
-import { Fragment, useEffect, useRef, useState } from "react";
+import {
+  Fragment,
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { DropArea } from "./DropArea";
 import { useDrag } from "react-dnd";
 import { mergeRefs } from "react-merge-refs";
@@ -33,107 +41,105 @@ const Hover = styled.div`
   }}
 `;
 
-export const CanvasComponent = ({
-  path,
-  item,
-  onDrop,
-  onDelete,
-  onClick,
-  onClickOutside,
-  ...props
-}) => {
-  const selectedComponentPath = useApplicationState(
-    ({ selectedComponent }) => selectedComponent?.path
-  );
-  const run = useApplicationState(({ run }) => run);
+export const CanvasComponent = memo(
+  ({ path, item, onDrop, onDelete, onClick, onClickOutside }) => {
+    const selectedComponentPath = useApplicationState(
+      ({ selectedComponent }) => selectedComponent?.path
+    );
+    const run = useApplicationState(({ run }) => run);
 
-  const isSelected = selectedComponentPath === path;
+    const isSelected = selectedComponentPath === path;
 
-  const [_, drag, dragPreview] = useDrag(
-    () => ({
-      // "type" is required. It is used by the "accept" specification of drop targets.
-      type: item.name,
-      item: item,
-      // The collect function utilizes a "monitor" instance (see the Overview for what this is)
-      // to pull important pieces of state from the DnD system.
-    }),
-    [item]
-  );
-  const ref = useRef(null);
-  const isHover = useOver(ref);
-  const Component = getComponent(item);
-  useOnClickOutside(ref, () => onClickOutside?.(path));
-  const { accept, children } = item;
+    const [_, drag, dragPreview] = useDrag(
+      () => ({
+        // "type" is required. It is used by the "accept" specification of drop targets.
+        type: item.name,
+        item: { path: item.path },
+      }),
+      [item.path]
+    );
+    const ref = useRef(null);
+    const isHover = useOver(ref);
 
-  return (
-    <Hover
-      ref={mergeRefs([ref, dragPreview, drag])}
-      $active={isHover || isSelected}
-      style={{
-        paddingLeft: isHover ? 10 : 0,
-        position: "relative",
-      }}
-      onClick={(e) => {
-        e.stopPropagation();
-        onClick?.(item);
-      }}
-    >
-      {/*<Controls>*/}
-      {/*  <div*/}
-      {/*    style={{*/}
-      {/*      display: "flex",*/}
-      {/*      flexDirection: "row",*/}
-      {/*      gap: "16px",*/}
-      {/*      justifyContent: "end",*/}
-      {/*    }}*/}
-      {/*  >*/}
-      {/*    <button*/}
-      {/*      onClick={(e) => {*/}
-      {/*        // e.stopPropagation();*/}
-      {/*        onDelete(item);*/}
-      {/*      }}*/}
-      {/*    >*/}
-      {/*      Delete*/}
-      {/*    </button>*/}
-      {/*  </div>*/}
-      {/*</Controls>*/}
-      <Component {...props} item={item}>
-        <DropArea
-          data={{
-            path: `${path}.children.0`,
-          }}
-          onDrop={(dropArea, item) => run(dropItemCommand(dropArea, item))}
-          accept={accept}
-        />
-        {children.map((child, i) => {
-          return (
-            <div key={`${path}.children.${i}`} style={{ paddingLeft: 15 }}>
-              <CanvasComponent
-                onDelete={onDelete}
-                onClickOutside={onClickOutside}
-                onClick={onClick}
-                item={{
-                  ...child,
-                  path: `${path}.children.${i}`,
-                  parentPath: item.path,
-                }}
-                onDrop={onDrop}
-                path={`${path}.children.${i}`}
-              />
+    const Component = useMemo(() => getComponent(item), [item]);
 
-              <DropArea
-                data={{
-                  path: `${path}.children.${i + 1}`,
-                }}
-                onDrop={(dropArea, item) =>
-                  run(dropItemCommand(dropArea, item))
-                }
-                accept={accept}
-              />
-            </div>
-          );
-        })}
-      </Component>
-    </Hover>
-  );
-};
+    useOnClickOutside(ref, () => onClickOutside?.(path));
+    const { accept, children } = item;
+
+    const handleDrop = useCallback(
+      (dropArea, item) => run(dropItemCommand(dropArea, item)),
+      []
+    );
+
+    return (
+      <Hover
+        ref={mergeRefs([ref, dragPreview, drag])}
+        $active={isHover || isSelected}
+        style={{
+          paddingLeft: isHover ? 10 : 0,
+          position: "relative",
+        }}
+        onClick={(e) => {
+          e.stopPropagation();
+          onClick?.(item);
+        }}
+      >
+        {/*<Controls>*/}
+        {/*  <div*/}
+        {/*    style={{*/}
+        {/*      display: "flex",*/}
+        {/*      flexDirection: "row",*/}
+        {/*      gap: "16px",*/}
+        {/*      justifyContent: "end",*/}
+        {/*    }}*/}
+        {/*  >*/}
+        {/*    <button*/}
+        {/*      onClick={(e) => {*/}
+        {/*        // e.stopPropagation();*/}
+        {/*        onDelete(item);*/}
+        {/*      }}*/}
+        {/*    >*/}
+        {/*      Delete*/}
+        {/*    </button>*/}
+        {/*  </div>*/}
+        {/*</Controls>*/}
+        <Component {...item.props} name={item.name}>
+          <DropArea
+            data={{
+              path: `${path}.children.0`,
+            }}
+            onDrop={handleDrop}
+            accept={accept}
+          />
+          {children.map((child, i) => {
+            const childPath = `${path}.children.${i}`;
+            return (
+              <div key={childPath} style={{ paddingLeft: 15 }}>
+                <CanvasComponent
+                  onDelete={onDelete}
+                  onClickOutside={onClickOutside}
+                  onClick={onClick}
+                  item={{
+                    ...child,
+                    path: childPath,
+                    parentPath: item.path,
+                  }}
+                  onDrop={onDrop}
+                  path={childPath}
+                />
+
+                <DropArea
+                  data={{
+                    path: `${path}.children.${i + 1}`,
+                  }}
+                  onDrop={handleDrop}
+                  accept={accept}
+                />
+              </div>
+            );
+          })}
+        </Component>
+      </Hover>
+    );
+  }
+);

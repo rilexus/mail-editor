@@ -1,8 +1,8 @@
 import React from "react";
 
-export const Date = ({ children }) => {
+export const Date = ({ children, style }) => {
   return (
-    <div>
+    <div style={style}>
       Date
       {children}
     </div>

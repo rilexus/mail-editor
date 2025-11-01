@@ -211,7 +211,7 @@ export const getComponent = ({ name }) => {
     case ElementTypes.share:
       return Share;
     default: {
-      log.warn(`No "${name}" component found!`);
+      // log.warn(`No "${name}" component found!`);
       return (props) => {
         return (
           <div
@@ -219,7 +219,7 @@ export const getComponent = ({ name }) => {
               background: "yellow",
             }}
           >
-            {props.item.name}
+            {props.name}
           </div>
         );
       };

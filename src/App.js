@@ -17,8 +17,6 @@ export default withApplicationState(function EmailEditor() {
     ({ selectedComponent }) => selectedComponent
   );
 
-  const run = useApplicationState(({ run }) => run);
-
   const [selectedElement, setSelectedElement] = useState("picture");
   const [paddingsEnabled, setPaddingsEnabled] = useState(true);
   const [paddings, setPaddings] = useState({ L: 24, T: 24, R: 24, B: 24 });
@@ -56,6 +54,7 @@ export default withApplicationState(function EmailEditor() {
           selectTemplateCommand({ name });
         }}
       />
+
       <MainContent>
         <DndProvider backend={HTML5Backend}>
           <Sidebar />

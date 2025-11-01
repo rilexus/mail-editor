@@ -1,26 +1,6 @@
 import { useEffect, useState } from "react";
-import {
-  SidebarContainer,
-  TabsContainer,
-  Tab,
-  TabUnderline,
-  SectionHeader,
-  SectionTitle,
-  CollapseIcon,
-  ContentList,
-  ContentItem,
-  ItemIcon,
-  ItemLabel,
-  DragHandle,
-  ElementType,
-} from "./styles";
-import { useDrag } from "react-dnd";
-import { defaultComponents } from "../../defaultComponents";
-import { useEditorStore } from "../../state";
-import { add } from "../../state/commands";
-import { useApplicationState } from "../../providers/StateProvider";
+import { SidebarContainer, TabsContainer, Tab, TabUnderline } from "./styles";
 import { Elements } from "./components/Elements";
-import { DragHandler } from "../../ui/icons/DragHandler";
 
 const contentItems = [
   { id: "title", label: "Title", icon: "T" },
@@ -36,12 +16,6 @@ const contentItems = [
 export default function Sidebar() {
   const [activeTab, setActiveTab] = useState("elements");
   const [contentExpanded, setContentExpanded] = useState(true);
-
-  const store = useEditorStore((state) => state);
-
-  useEffect(() => {
-    store.run(add(1));
-  }, []);
 
   return (
     <SidebarContainer>

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useCallback, useContext, useState } from "react";
 import defaultConfig from "../default.js";
 import { capitalize } from "../utils/capitalize";
 import { getAcceptArray } from "./getAcceptArray";
@@ -18,6 +18,9 @@ const mailer2TemplateToCanvasLayout = (template) => {
                 name: key,
                 id: "",
                 path: "",
+                props: {
+                  style: {},
+                },
                 label: capitalize(key),
                 accept: getAcceptArray({ name: key }),
                 ...run(value),
@@ -32,6 +35,9 @@ const mailer2TemplateToCanvasLayout = (template) => {
                 name: key,
                 id: "",
                 path: "",
+                props: {
+                  style: {},
+                },
                 label: capitalize(key),
                 accept: getAcceptArray({ name: key }),
                 ...run(value),
@@ -88,12 +94,15 @@ export const StateProvider = ({ children }) => {
     return initialState;
   });
 
-  const run = (command) => {
-    command.execute(state, setState);
-  };
+  const run = useCallback(
+    (command) => {
+      command.execute(state, setState);
+    },
+    [state]
+  );
 
-  const undo = () => {};
-  const redo = () => {};
+  const undo = useCallback(() => {}, []);
+  const redo = useCallback(() => {}, []);
 
   return (
     <Context.Provider value={{ ...state, run, redo, undo }}>

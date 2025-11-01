@@ -1,8 +1,8 @@
 import React from "react";
 
-export const Inner = ({ children }) => {
+export const Inner = ({ children, style }) => {
   return (
-    <div>
+    <div style={style}>
       Inner
       {children}
     </div>
